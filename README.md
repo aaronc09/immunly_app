@@ -75,7 +75,3 @@ Immunly is intended for educational purposes only. It is not intended to provide
 ## Author
 
 **Aaron Choi**
-
-## License
-
-See the `LICENSE` file for licensing information.
