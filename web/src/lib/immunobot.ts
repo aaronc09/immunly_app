@@ -5,6 +5,15 @@ export const IMMUNOBOT_URL: string | undefined = import.meta.env.VITE_IMMUNOBOT_
 export interface BotMessage {
   role: 'user' | 'assistant';
   content: string;
+  /** Proof the server wrote this reply; sent back so history can't be faked. */
+  sig?: string;
+}
+
+export interface BotReply {
+  text: string;
+  sig?: string;
+  /** Set when the answer is one of ImmunoBot's fixed topic-limit replies. */
+  guard?: string;
 }
 
 export type BotErrorCode =
@@ -48,7 +57,7 @@ export async function askImmunoBot(input: {
   messages: BotMessage[];
   context?: string;
   page?: string;
-}): Promise<string> {
+}): Promise<BotReply> {
   if (!IMMUNOBOT_URL) {
     throw new BotError('not_configured', "ImmunoBot isn't switched on yet.");
   }
@@ -69,7 +78,7 @@ export async function askImmunoBot(input: {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: input.messages.slice(-12),
+          messages: input.messages.slice(-12).map(m => ({ role: m.role, content: m.content, sig: m.sig })),
           context: input.context?.slice(0, MAX_CONTEXT_CHARS),
           page: input.page,
         }),
@@ -82,10 +91,10 @@ export async function askImmunoBot(input: {
     }
 
     const data = await res.json().catch(() => null) as
-      | { reply?: string; error?: { code?: BotErrorCode; message?: string; retryAfter?: number } }
+      | { reply?: string; sig?: string; guard?: string; error?: { code?: BotErrorCode; message?: string; retryAfter?: number } }
       | null;
 
-    if (res.ok && data?.reply) return data.reply;
+    if (res.ok && data?.reply) return { text: data.reply, sig: data.sig, guard: data.guard };
 
     const retryHeader = Number(res.headers.get('Retry-After'));
     const retryAfter = data?.error?.retryAfter ?? (Number.isFinite(retryHeader) && retryHeader > 0 ? retryHeader : undefined);

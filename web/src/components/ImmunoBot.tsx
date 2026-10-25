@@ -10,6 +10,8 @@ interface ChatEntry extends BotMessage {
   /** Set on a failed request; the bubble then offers "Try again". */
   failed?: { code: BotError['code']; message: string; retryAfter?: number; context?: string };
   context?: string;
+  /** Set when ImmunoBot declined the topic, so the bubble is styled calmly. */
+  guard?: string;
 }
 
 interface TextSelection { text: string; x: number; y: number; below: boolean }
@@ -44,13 +46,22 @@ function pageTitle() {
 
 /** Minimal, safe formatting for replies: paragraphs, "- " lists, **bold**. */
 function FormattedReply({ text }: { text: string }) {
+  // **bold** and bare https:// links (helpline links must be clickable).
   const inline = (line: string, key: number) => (
     <React.Fragment key={key}>
-      {line.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-        part.startsWith('**') && part.endsWith('**') && part.length > 4
-          ? <strong key={i}>{part.slice(2, -2)}</strong>
-          : <React.Fragment key={i}>{part}</React.Fragment>,
-      )}
+      {line.split(/(\*\*[^*]+\*\*|https?:\/\/[^\s)]+)/g).map((part, i) => {
+        if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+          return <strong key={i}>{part.slice(2, -2)}</strong>;
+        }
+        if (/^https?:\/\//.test(part)) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer">
+              {part.replace(/^https?:\/\//, '')}
+            </a>
+          );
+        }
+        return <React.Fragment key={i}>{part}</React.Fragment>;
+      })}
     </React.Fragment>
   );
 
@@ -198,11 +209,11 @@ export default function ImmunoBot() {
 
     try {
       const reply = await askImmunoBot({
-        messages: [...clean, userEntry].map(({ role, content }) => ({ role, content })),
+        messages: [...clean, userEntry].map(({ role, content, sig }) => ({ role, content, sig })),
         context: passage ?? undefined,
         page: pageTitle(),
       });
-      setEntries(prev => [...prev, { role: 'assistant', content: reply }]);
+      setEntries(prev => [...prev, { role: 'assistant', content: reply.text, sig: reply.sig, guard: reply.guard }]);
     } catch (e) {
       const err = e instanceof BotError ? e : new BotError('network', 'Something went wrong.');
       if (err.retryAfter) {
@@ -281,7 +292,7 @@ export default function ImmunoBot() {
             {entries.map((e, i) => (
               <div
                 key={i}
-                className={`immunobot-msg immunobot-msg--${e.role} ${e.failed ? 'immunobot-msg--failed' : ''}`}
+                className={`immunobot-msg immunobot-msg--${e.role} ${e.failed ? 'immunobot-msg--failed' : ''} ${e.guard ? 'immunobot-msg--guard' : ''}`}
               >
                 {e.context && <blockquote className="immunobot-msg__quote">{e.context}</blockquote>}
                 {e.role === 'assistant' && !e.failed ? <FormattedReply text={e.content} /> : <p>{e.content}</p>}

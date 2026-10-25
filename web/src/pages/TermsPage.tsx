@@ -40,6 +40,17 @@ export default function TermsPage() {
               </li>
               <li>Don't enter personal or sensitive information into ImmunoBot (see our <Link to="/privacy">Privacy Policy</Link>).</li>
               <li>
+                ImmunoBot only answers questions about immunology, biology and science research. It will not write code,
+                give counselling or emotional support, or help with anything that could put someone in danger, and it
+                won't respond to abusive messages.
+              </li>
+              <li>
+                <strong>ImmunoBot is not a crisis service.</strong> If someone mentions harming themselves, it replies
+                with helpline details and nothing more. If you are struggling, please talk to a trusted adult, or call
+                or text 988 in the US (<a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a> lists free
+                helplines elsewhere). In an emergency, call your local emergency number.
+              </li>
+              <li>
                 To keep ImmunoBot available for everyone, it limits how many questions can be sent in a short time.
                 When it's busy or a request fails, it will tell you and you can try again shortly.
               </li>

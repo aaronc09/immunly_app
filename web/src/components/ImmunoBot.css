@@ -167,6 +167,23 @@
   border-bottom-left-radius: 4px;
 }
 
+/* ImmunoBot declined the topic: calm, not an error */
+.immunobot-msg--guard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent);
+}
+
+.immunobot-msg a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-word;
+}
+
+.immunobot-msg--user a { color: var(--on-accent); }
+
 .immunobot-msg--failed {
   background: var(--error-bg);
   color: var(--text);
