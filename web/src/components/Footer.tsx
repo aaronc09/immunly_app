@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="container footer__inner">
         <div className="footer__brand">
           <span className="footer__logo"><Logo size={26} /></span>
-          <p>Free immunology &amp; biomedical-research education, built for curious minds.</p>
+          <p>Short, research-backed immunology lessons for curious students, so the first step into biomedical research feels inevitable.</p>
         </div>
         <div className="footer__links">
           <div className="footer__col">
@@ -24,6 +24,9 @@ export default function Footer() {
             <Link to="/">Home</Link>
             <Link to="/research">Research</Link>
             <Link to="/contact">Contact</Link>
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms of Use</Link>
+            <Link to="/cookies">Cookie Policy</Link>
             <Link to="/login">Log in</Link>
           </div>
         </div>

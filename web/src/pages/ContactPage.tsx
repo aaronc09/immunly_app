@@ -44,7 +44,6 @@ export default function ContactPage() {
           <div className="contact-form-wrap card">
             {sent ? (
               <div className="contact-success">
-                <span>✅</span>
                 <h3>Message received!</h3>
                 <p>Thanks for reaching out. We'll get back to you as soon as possible.</p>
               </div>

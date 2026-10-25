@@ -156,12 +156,12 @@
 
 .streak-opt--correct .streak-opt__letter {
   background: var(--success);
-  color: white;
+  color: var(--bg-card);
 }
 
 .streak-opt--wrong .streak-opt__letter {
   background: var(--error);
-  color: white;
+  color: var(--bg-card);
 }
 
 .streak-modal__result {

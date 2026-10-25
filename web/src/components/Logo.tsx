@@ -8,11 +8,13 @@ interface LogoProps {
 
 export default function Logo({ size = 32, showWordmark = true, className }: LogoProps) {
   const { theme } = useTheme();
-  const dark  = '#1B4B9E';
-  const mid   = '#2E62C4';
-  const light = '#5B9BF5';
-  const pale  = '#AFCDF5';
-  const wordmarkMain = theme === 'dark' ? '#FFFFFF' : dark;
+  // Charcoal/mint + teal, matching --primary and --accent in globals.css
+  const isDark = theme === 'dark';
+  const dark  = isDark ? '#E6F2EE' : '#2C3531';
+  const mid   = isDark ? '#A8C1B9' : '#46534E';
+  const light = isDark ? '#3DB5AD' : '#116466';
+  const pale  = isDark ? '#123C3B' : '#D1E8E2';
+  const wordmarkMain = dark;
 
   return (
     <span className={className} style={{ display: 'inline-flex', alignItems: 'center', gap: 9 }}>
@@ -46,7 +48,7 @@ export default function Logo({ size = 32, showWordmark = true, className }: Logo
         <path d="M32 40 V52" stroke={dark} strokeWidth="2.5" strokeLinecap="round" />
       </svg>
       {showWordmark && (
-        <span style={{ fontWeight: 800, fontSize: size * 0.62, letterSpacing: '-0.02em', color: wordmarkMain }}>
+        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: size * 0.66, letterSpacing: '-0.01em', color: wordmarkMain }}>
           Immun<span style={{ color: light }}>ly</span>
         </span>
       )}

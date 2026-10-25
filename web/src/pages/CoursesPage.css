@@ -1,14 +1,15 @@
 .courses-page {
   padding-bottom: 60px;
+  /* Same treatment as the home hero: the blue artwork re-inked in the page colour */
+  background-color: var(--bg);
   background-image: url('/pic2.webp');
+  background-blend-mode: luminosity;
   background-size: cover;
   background-position: top center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
-/* The artwork is tinted for the light palette, so don't show it over the
-   dark theme's navy background — it would clash rather than blend in. */
 [data-theme="dark"] .courses-page {
   background-image: none;
 }

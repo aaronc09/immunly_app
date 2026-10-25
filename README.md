@@ -2,7 +2,15 @@
 
 **Immunly** is an interactive educational application designed to make learning immunology more accessible and engaging.
 
+> **Immunly exists to turn immunology into short, research-backed lessons for curious students, so that their first step into biomedical research becomes inevitable.**
+>
+> Use this sentence to decide what belongs in the product: if a feature, page or design choice doesn't serve it, it doesn't ship.
+
 The app organizes immunology concepts into structured learning modules and provides tools to help users learn, review, and track their progress.
+
+## ImmunoBot on the website
+
+The immunly.org chat assistant needs a small Cloudflare Worker that holds the AI keys. Setup steps, free key sources and rate limits: [web/worker/README.md](web/worker/README.md).
 
 ## Features
 

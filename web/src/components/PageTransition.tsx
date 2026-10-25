@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { getConsent } from '../lib/cookieConsent';
 import './PageTransition.css';
 
 declare global {
@@ -20,7 +21,9 @@ export default function PageTransition({ children }: { children: React.ReactNode
     window.scrollTo(0, 0);
     // GA's automatic pageview only fires once on initial load (send_page_view
     // is off in index.html); React Router navigations don't trigger a real
-    // page load, so each route change has to be reported manually.
+    // page load, so each route change has to be reported manually — and only
+    // when the visitor accepted analytics cookies.
+    if (getConsent() !== 'granted') return;
     window.gtag?.('event', 'page_view', {
       page_path: location.pathname + location.search,
       page_title: document.title,

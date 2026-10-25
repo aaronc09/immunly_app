@@ -6,17 +6,17 @@ import { ONLINE_PROGRAMS, INPERSON_PROGRAMS, COMPETITIONS } from '../data/resear
 import type { OnlineProgram, InPersonProgram, Competition } from '../data/researchPrograms';
 import './ResearchPage.css';
 
-const TABS = [
-  { label: 'How to Find Research',    icon: '🔬' },
-  { label: 'Online Research Programs', icon: '💻' },
-  { label: 'In-Person Opportunities', icon: '📍' },
-  { label: 'Competitions',            icon: '🏆' },
+const TABS: { label: string }[] = [
+  { label: 'How to Find Research' },
+  { label: 'Online Research Programs' },
+  { label: 'In-Person Opportunities' },
+  { label: 'Competitions' },
 ] as const;
 
-const STAGES = [
-  { number: 1, icon: '💻', title: 'Start Here: Dry Lab',            color: 'var(--accent)',  sub: 'No equipment needed. Just curiosity and a computer.' },
-  { number: 2, icon: '🎓', title: 'Level Up: Programs & Mentorship', color: 'var(--success)', sub: 'Build credentials and get structured guidance.' },
-  { number: 3, icon: '🧪', title: 'Wet Lab: The Hard Truth',         color: 'var(--warning)', sub: 'Rare but possible — here\'s exactly how.' },
+const STAGES: { number: number; title: string; color: string; sub: string }[] = [
+  { number: 1, title: 'Start Here: Dry Lab',            color: 'var(--accent)',  sub: 'No equipment needed. Just curiosity and a computer.' },
+  { number: 2, title: 'Level Up: Programs & Mentorship', color: 'var(--accent)',  sub: 'Build credentials and get structured guidance.' },
+  { number: 3, title: 'Wet Lab: The Hard Truth',         color: 'var(--accent)',  sub: 'Rare but possible — here\'s exactly how.' },
 ];
 
 export default function ResearchPage() {
@@ -71,7 +71,6 @@ export default function ResearchPage() {
               className={`research-tab-btn ${tab === i ? 'active' : ''}`}
               onClick={() => setTab(i)}
             >
-              <span className="research-tab-btn__icon">{t.icon}</span>
               {t.label}
             </button>
           ))}
@@ -92,7 +91,6 @@ export default function ResearchPage() {
                     <div className="ssc__header">
                       <div className="ssc__top">
                         <div className="ssc__badge">{s.number}</div>
-                        <span className="ssc__icon">{s.icon}</span>
                       </div>
                       <span className="ssc__title">{s.title}</span>
                       <span className="ssc__sub">{s.sub}</span>
@@ -104,7 +102,6 @@ export default function ResearchPage() {
                       {i === 2 && <WetLabContent />}
                     </div>
 
-                    {!isActive && <span className="ssc__illus" aria-hidden="true">{s.icon}</span>}
                   </div>
                   {i < 2 && <span className="ssc-arrow" aria-hidden="true">→</span>}
                 </Fragment>
@@ -128,43 +125,36 @@ export default function ResearchPage() {
 
 // ─── STAGE CARD CONTENT ───────────────────────────────────────────────────────
 
-const DRY_LAB_CARDS = [
+const DRY_LAB_CARDS: { title: string; body: string; highlight?: boolean }[] = [
   {
-    icon: '📄',
     title: 'Literature Reviews',
     body: 'Read papers on PubMed and Google Scholar. Summarize 5–10 papers on a topic you care about. This builds genuine expertise and proves to future mentors that you can engage with primary literature.',
   },
   {
-    icon: '🧬',
     title: 'Computational Biology',
     body: 'Analyze public genomic datasets from NCBI, GEO, or UCSC Genome Browser — all free. Learn Python with pandas and BioPython, or R with Bioconductor. No equipment required.',
   },
   {
-    icon: '🤖',
     title: 'Machine Learning in Biology',
     body: 'Build disease prediction models, protein structure classifiers, or drug-target interaction predictors using scikit-learn or PyTorch. Kaggle has biology-specific datasets to practice on.',
   },
   {
-    icon: '⚡',
     title: 'Why Start Here',
     highlight: true,
     body: 'Free tools, no equipment, no application required. A well-documented GitHub project from dry lab work is the strongest application asset you can have — it proves you can actually do research.',
   },
 ];
 
-const PROGRAM_CARDS = [
+const PROGRAM_CARDS: { title: string; body: string }[] = [
   {
-    icon: '🏆',
     title: 'Apply to Structured Programs',
     body: 'Science fairs (ISEF), online mentorship programs (Polygence, Inspirit AI), and competitive university summer programs all provide structure, mentorship, and credentials for your portfolio.',
   },
   {
-    icon: '📧',
     title: 'Reach Out to Professors',
     body: 'Cold email computational biologists and bioinformaticians at nearby universities. Data analysis projects are far easier for a professor to assign to a motivated high schooler than wet lab work.',
   },
   {
-    icon: '📁',
     title: 'Build a Research Portfolio',
     body: 'Create a GitHub profile with your dry lab projects. Write a brief "research summary" document. This becomes your application to any competitive program — treat it like a mini-CV.',
   },
@@ -192,7 +182,6 @@ function DryLabContent() {
     <div className="stage-cards">
       {DRY_LAB_CARDS.map((c) => (
         <div key={c.title} className={`stage-card ${c.highlight ? 'stage-card--highlight' : ''}`}>
-          <span className="stage-card__icon">{c.icon}</span>
           <div>
             <strong>{c.title}</strong>
             <p>{c.body}</p>
@@ -208,7 +197,6 @@ function ProgramContent() {
     <div className="stage-cards">
       {PROGRAM_CARDS.map((c) => (
         <div key={c.title} className="stage-card">
-          <span className="stage-card__icon">{c.icon}</span>
           <div>
             <strong>{c.title}</strong>
             <p>{c.body}</p>
@@ -234,13 +222,13 @@ function WetLabContent() {
 
       <div className="cold-email-grid">
         <div className="cold-email-column cold-email-column--do">
-          <div className="cold-email-column__header">✅ DO</div>
+          <div className="cold-email-column__header">DO</div>
           <ul>
             {COLD_EMAIL_DOS.map((item) => <li key={item}>{item}</li>)}
           </ul>
         </div>
         <div className="cold-email-column cold-email-column--dont">
-          <div className="cold-email-column__header">❌ DON'T</div>
+          <div className="cold-email-column__header">DON'T</div>
           <ul>
             {COLD_EMAIL_DONTS.map((item) => <li key={item}>{item}</li>)}
           </ul>
@@ -248,7 +236,7 @@ function WetLabContent() {
       </div>
 
       <div className="email-template">
-        <div className="email-template__label">📧 Template Structure</div>
+        <div className="email-template__label">Template Structure</div>
         <div className="email-template__field">
           <span className="email-field-key">Subject:</span>{' '}
           [Their research topic] — High School Researcher Inquiry
@@ -314,7 +302,6 @@ function CompetitionCard({ comp, isOpen, onToggle }: { comp: Competition; isOpen
     <div className={`comp-card ${isOpen ? 'comp-card--open' : ''}`}>
       <button className="comp-card__header" onClick={onToggle} aria-expanded={isOpen}>
         <div className="comp-card__left">
-          <span className="comp-card__trophy">🏆</span>
           <div className="comp-card__meta">
             <span className="comp-card__name">{comp.name}</span>
             <span className="comp-card__org">{comp.org}</span>
@@ -541,9 +528,15 @@ function InPersonTab() {
   const [liveZoom, setLiveZoom] = useState(DEFAULT_ZOOM);
   const [currentK, setCurrentK] = useState(DEFAULT_ZOOM);
 
-  const mapFill   = theme === 'dark' ? '#1C2A45' : '#DDE8F5';
-  const mapStroke = theme === 'dark' ? '#253654' : '#B8CCE4';
-  const mapHover  = theme === 'dark' ? '#253654' : '#C8D9EF';
+  // SVG attributes can't read CSS variables, so the map mirrors the palette
+  // in globals.css by hand.
+  const dark      = theme === 'dark';
+  const mapFill   = dark ? '#2C3531' : '#D1E8E2';
+  const mapStroke = dark ? '#46564F' : '#9DBDB3';
+  const mapHover  = dark ? '#33403B' : '#C3D9D2';
+  const pinInk    = dark ? '#0E1513' : '#F2F8F5';
+  const pin       = dark ? '#3DB5AD' : '#116466';
+  const pinStrong = dark ? '#5CCBC3' : '#0B4C4E';
 
   const clusters = buildClusters(INPERSON_PROGRAMS, liveZoom);
 
@@ -654,9 +647,10 @@ function InPersonTab() {
                     cluster.ids.length === selection.ids.length &&
                     cluster.ids.every((id) => selection.ids.includes(id));
 
+                  // Accent only: active pins use the stronger shade
                   const fill = isCluster
-                    ? isClusterActive ? '#1D4ED8' : '#3B82F6'
-                    : isSingleActive ? '#FF2020' : '#EF4444';
+                    ? isClusterActive ? pinStrong : pin
+                    : isSingleActive ? pinStrong : pin;
 
                   const prog = !isCluster
                     ? INPERSON_PROGRAMS.find((p) => p.id === singleId)
@@ -671,7 +665,7 @@ function InPersonTab() {
                       {isSingleActive && (
                         <circle
                           r={18 / currentK}
-                          fill="#EF4444"
+                          fill={pin}
                           fillOpacity={0.18}
                           style={{ pointerEvents: 'none' }}
                         />
@@ -679,7 +673,7 @@ function InPersonTab() {
                       <circle
                         r={(isCluster ? 11 : isSingleActive ? 11 : 8) / currentK}
                         fill={fill}
-                        stroke="white"
+                        stroke={pinInk}
                         strokeWidth={2 / currentK}
                         style={{ cursor: 'pointer' }}
                       />
@@ -687,7 +681,7 @@ function InPersonTab() {
                         <text
                           textAnchor="middle"
                           dominantBaseline="central"
-                          fill="white"
+                          fill={pinInk}
                           fontSize={9 / currentK}
                           fontWeight="bold"
                           style={{ pointerEvents: 'none', userSelect: 'none' }}
@@ -719,7 +713,6 @@ function InPersonTab() {
             />
           ) : (
             <div className="program-panel__empty">
-              <span className="panel-empty-icon">📍</span>
               <p>Click a pin on the map to see program details.</p>
             </div>
           )}
@@ -745,7 +738,6 @@ function InPersonTab() {
                 )
               }
             >
-              <span className="list-item-pin">📍</span>
               <span className="list-item-name">{prog.name}</span>
               <span className="list-item-loc">{prog.city}, {prog.state}</span>
             </button>
@@ -773,7 +765,7 @@ function ClusterList({
     <div className="program-detail">
       <button className="program-detail__close" onClick={onClose} aria-label="Close">✕</button>
       <div className="program-detail__location">
-        📍 {progs[0]?.city}, {progs[0]?.state}
+        {progs[0]?.city}, {progs[0]?.state}
       </div>
       <h3 className="program-detail__name">{progs.length} Programs at this Location</h3>
       <p className="program-detail__institution">Select a program to see details</p>
@@ -793,15 +785,15 @@ function ProgramDetail({ prog, onClose }: { prog: InPersonProgram; onClose: () =
   return (
     <div className="program-detail">
       <button className="program-detail__close" onClick={onClose} aria-label="Close">✕</button>
-      <div className="program-detail__location">📍 {prog.city}, {prog.state}</div>
+      <div className="program-detail__location">{prog.city}, {prog.state}</div>
       <h3 className="program-detail__name">{prog.name}</h3>
       <p className="program-detail__institution">{prog.institution}</p>
       <p className="program-detail__desc">{prog.description}</p>
       <div className="program-detail__meta">
-        <div className="detail-meta-row"><span>⏱</span><span>{prog.duration}</span></div>
-        <div className="detail-meta-row"><span>📅</span><span>Deadline: {prog.deadline}</span></div>
-        {prog.cost && <div className="detail-meta-row"><span>💰</span><span>{prog.cost}</span></div>}
-        {prog.eligibility && <div className="detail-meta-row"><span>🎓</span><span>{prog.eligibility}</span></div>}
+        <div className="detail-meta-row"><span className="detail-meta-label">Duration</span><span>{prog.duration}</span></div>
+        <div className="detail-meta-row"><span className="detail-meta-label">Deadline</span><span>{prog.deadline}</span></div>
+        {prog.cost && <div className="detail-meta-row"><span className="detail-meta-label">Cost</span><span>{prog.cost}</span></div>}
+        {prog.eligibility && <div className="detail-meta-row"><span className="detail-meta-label">Eligibility</span><span>{prog.eligibility}</span></div>}
       </div>
       <a href={prog.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary apply-btn">
         Apply Now →

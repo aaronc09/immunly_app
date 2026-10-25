@@ -6,6 +6,15 @@ interface Props {
   sections: LessonSection[];
 }
 
+// Callouts in the curriculum are tagged with assorted colours. They collapse to
+// two tones so lessons match the site palette: warm tags flag a caution, the
+// rest use the brand accent.
+const CAUTION_TAGS = new Set(['red', 'amber', 'orange']);
+
+function calloutColor(tag?: string) {
+  return tag && CAUTION_TAGS.has(tag) ? 'var(--warning)' : 'var(--accent)';
+}
+
 export default function LessonContent({ sections }: Props) {
   return (
     <div className="lesson-content">
@@ -21,7 +30,7 @@ export default function LessonContent({ sections }: Props) {
 
           case 'callout':
             return (
-              <div key={i} className="lc-callout" style={{ '--callout-color': section.color || 'var(--accent)' } as React.CSSProperties}>
+              <div key={i} className="lc-callout" style={{ '--callout-color': calloutColor(section.color) } as React.CSSProperties}>
                 <span className="lc-callout__label">{section.label}</span>
                 <p>{section.text}</p>
               </div>

@@ -28,9 +28,12 @@
 .avatar--sm .avatar__ring::after { inset: 2px; }
 .avatar--lg .avatar__ring::after { inset: 4px; }
 
-.avatar__emoji {
+.avatar__level {
   position: relative;
   z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text);
 }
 
 .avatar__label {

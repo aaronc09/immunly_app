@@ -43,7 +43,6 @@ export default function SearchModal({ open, onClose }: { open: boolean; onClose:
     <div className="search-modal__backdrop" onClick={onClose}>
       <div className="search-modal" onClick={(e) => e.stopPropagation()}>
         <div className="search-modal__input-row">
-          <span className="search-modal__icon">🔍</span>
           <input
             ref={inputRef}
             type="text"
@@ -61,12 +60,11 @@ export default function SearchModal({ open, onClose }: { open: boolean; onClose:
             ) : (
               results.map((r) => (
                 <button key={r.lessonId} className="search-modal__result" onClick={() => goTo(r)}>
-                  <span className="search-modal__result-emoji">{r.lessonEmoji}</span>
                   <span className="search-modal__result-body">
                     <span className="search-modal__result-title">{r.lessonTitle}</span>
                     <span className="search-modal__result-snippet">{r.snippet}</span>
                     <span className="search-modal__result-module" style={{ color: r.moduleColor }}>
-                      {r.moduleEmoji} {r.moduleTitle}
+                      {r.moduleTitle}
                     </span>
                   </span>
                 </button>

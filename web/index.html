@@ -27,21 +27,34 @@
     </script>
     <!-- End Single Page Apps for GitHub Pages -->
 
+    <!-- Apply the theme before first paint so the page never flashes light.
+         Mirrors ThemeContext: dark unless the visitor picked light. -->
+    <script>
+      document.documentElement.setAttribute(
+        'data-theme',
+        localStorage.getItem('immunly_theme') === 'light' ? 'light' : 'dark'
+      );
+    </script>
+
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TPJ9F0QZKH"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
 
-      // Consent Mode: analytics cookies stay off until the visitor accepts the
-      // cookie banner (see CookieConsent.tsx). gtag doesn't remember consent
-      // across page loads on its own, so re-apply a previously stored choice
-      // immediately, before GA actually starts.
+      // Google Analytics only loads after the visitor picks "Accept all" in the
+      // cookie banner (see src/lib/cookieConsent.ts). Commands below queue in
+      // dataLayer and run once gtag.js arrives. A choice stored on an earlier
+      // visit is re-applied here, before React starts.
       gtag('consent', 'default', {
         analytics_storage: 'denied',
       });
       if (localStorage.getItem('immunly_cookie_consent') === 'granted') {
         gtag('consent', 'update', { analytics_storage: 'granted' });
+        var ga = document.createElement('script');
+        ga.async = true;
+        ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-TPJ9F0QZKH';
+        ga.setAttribute('data-immunly-ga', 'true');
+        document.head.appendChild(ga);
       }
 
       gtag('js', new Date());
@@ -72,7 +85,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&family=Playfair+Display:ital,wght@0,500..800;1,500..800&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>

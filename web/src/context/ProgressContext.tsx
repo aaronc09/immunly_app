@@ -19,15 +19,14 @@ interface ProgressContextValue {
   saveStreak: () => void; // called when streak saver question answered correctly
   level: number;
   levelTitle: string;
-  avatarEmoji: string;
 }
 
 const LEVELS = [
-  { min: 0,    max: 199,  title: 'Novice',    emoji: '🔬' },
-  { min: 200,  max: 499,  title: 'Explorer',  emoji: '🧫' },
-  { min: 500,  max: 999,  title: 'Analyst',   emoji: '🧬' },
-  { min: 1000, max: 1999, title: 'Researcher', emoji: '⚗️' },
-  { min: 2000, max: Infinity, title: 'Immunologist', emoji: '🏆' },
+  { min: 0,    max: 199,  title: 'Novice' },
+  { min: 200,  max: 499,  title: 'Explorer' },
+  { min: 500,  max: 999,  title: 'Analyst' },
+  { min: 1000, max: 1999, title: 'Researcher' },
+  { min: 2000, max: Infinity, title: 'Immunologist' },
 ];
 
 const DEFAULT_PROGRESS: ProgressData = {
@@ -48,7 +47,6 @@ const ProgressContext = createContext<ProgressContextValue>({
   saveStreak: () => {},
   level: 0,
   levelTitle: 'Novice',
-  avatarEmoji: '🔬',
 });
 
 function getKey(userId: string | null) {
@@ -159,7 +157,6 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       saveStreak,
       level: LEVELS.indexOf(levelData),
       levelTitle: levelData.title,
-      avatarEmoji: levelData.emoji,
     }}>
       {children}
     </ProgressContext.Provider>

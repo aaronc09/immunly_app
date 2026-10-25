@@ -1,0 +1,83 @@
+/* ── Reveal on scroll ──────────────────────────────────────────────────────── */
+/* Applied by ScrollEffects only when motion is allowed, so content is never
+   hidden for people who opt out or if the script doesn't run. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(3px);
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0ms),
+    filter 0.7s ease var(--reveal-delay, 0ms);
+}
+
+/* ── Progress bar ──────────────────────────────────────────────────────────── */
+/* Sits on the navbar's bottom edge and fills left to right */
+.scroll-progress {
+  position: fixed;
+  top: 63px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 101;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.8), 0 0 2px rgba(var(--accent-rgb), 1);
+  pointer-events: none;
+}
+
+/* ── Navbar once scrolled ──────────────────────────────────────────────────── */
+.navbar {
+  transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.navbar.navbar--scrolled {
+  border-bottom-color: rgba(var(--accent-rgb), 0.25);
+  box-shadow: 0 10px 30px -18px rgba(var(--accent-rgb), 0.55), var(--shadow-sm);
+}
+
+/* ── Hero parallax ─────────────────────────────────────────────────────────── */
+/* --scroll-y is the page offset in px, set by ScrollEffects. The text rises
+   a little slower than the page and fades; the artwork moves slower still. */
+.home-page .hero {
+  background-position: top center, center calc(var(--scroll-y, 0) * 0.35px);
+}
+
+[data-theme="dark"] .home-page .hero {
+  background-position: center, top center, center calc(var(--scroll-y, 0) * 0.35px);
+}
+
+.hero .hero__content {
+  transform: translateY(calc(var(--scroll-y, 0) * 0.18px));
+  opacity: max(0, calc(1 - var(--scroll-y, 0) / 700));
+  will-change: transform, opacity;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--accent-rgb), 0.55) transparent;
+  scroll-padding-top: 80px; /* anchors land below the fixed navbar */
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb), 0.45);
+  border: 3px solid var(--bg);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero__content { transform: none; opacity: 1; }
+  .home-page .hero { background-position: top center, top center; }
+  [data-theme="dark"] .home-page .hero { background-position: center, top center, top center; }
+}

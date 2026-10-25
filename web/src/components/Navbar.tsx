@@ -46,17 +46,17 @@ export default function Navbar() {
         <div className="navbar__actions">
           {/* Streak pill */}
           {progress.streak > 0 && (
-            <span className="navbar__streak">🔥 {progress.streak}</span>
+            <span className="navbar__streak">{progress.streak}-day streak</span>
           )}
 
           {/* Search */}
           <button className="navbar__theme-btn" onClick={() => setSearchOpen(true)} aria-label="Search lessons">
-            🔍
+            Search
           </button>
 
           {/* Theme toggle */}
           <button className="navbar__theme-btn" onClick={toggle} aria-label="Toggle theme">
-            {theme === 'light' ? '🌙' : '☀️'}
+            {theme === 'light' ? 'Dark' : 'Light'}
           </button>
 
           {user ? (

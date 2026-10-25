@@ -28,13 +28,12 @@ export default function ReferencePage() {
     <div className="reference-page page-content">
       <div className="container">
         <div className="reference-header">
-          <h1>📚 Reference Library</h1>
+          <h1>Reference Library</h1>
           <p>
             The memorization-heavy material — every cytokine, ligand, and receptor in one searchable place.
             Use this as a lookup table while you work through the courses; you don't need to memorize it all at once.
           </p>
           <div className="reference-search">
-            <span className="reference-search__icon">🔍</span>
             <input
               type="text"
               placeholder="Search by name, function, cell type… (e.g. 'IL-2', 'neutrophil', 'CXCR4')"
@@ -71,7 +70,6 @@ export default function ReferencePage() {
         {/* Tables */}
         {filtered.length === 0 ? (
           <div className="reference-empty">
-            <span>🔬</span>
             <p>No entries match "{query}".</p>
             <button className="btn btn-outline" onClick={() => setQuery('')}>Clear search</button>
           </div>

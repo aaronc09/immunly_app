@@ -8,7 +8,7 @@ interface AvatarProps {
 }
 
 export default function Avatar({ size = 'md', showLabel = false }: AvatarProps) {
-  const { progress, level, levelTitle, avatarEmoji } = useProgress();
+  const { progress, level, levelTitle } = useProgress();
   const levelData = LEVELS[level];
   const nextLevel = LEVELS[level + 1];
   const xpInLevel = progress.xp - levelData.min;
@@ -18,7 +18,7 @@ export default function Avatar({ size = 'md', showLabel = false }: AvatarProps) 
   return (
     <div className={`avatar avatar--${size}`}>
       <div className="avatar__ring" style={{ '--pct': `${pct}%` } as React.CSSProperties}>
-        <span className="avatar__emoji">{avatarEmoji}</span>
+        <span className="avatar__level" aria-label={`Level ${level + 1}`}>{level + 1}</span>
       </div>
       {showLabel && (
         <div className="avatar__label">

@@ -1,39 +1,61 @@
+/* ── Welcome tour: a full-screen carousel ─────────────────────────────────── */
+/* One easing curve for every move so slides, backgrounds and text feel like
+   one motion: fast out of the gate, long gentle settle. */
 .welcome-overlay {
+  --tour-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --tour-slide-ms: 750ms;
+
   position: fixed;
   inset: 0;
   z-index: 500;
   display: flex;
   flex-direction: column;
-  padding: 20px 56px;
-  animation: welcomeFade 0.35s ease;
-  transition: opacity 0.32s ease;
-  overflow: hidden;
+  /* The cookie banner publishes its height while it's showing, so the slide
+     controls sit above it instead of underneath */
+  padding: 20px 56px calc(24px + var(--cookie-banner-h, 0px));
+  background: var(--bg);
+  /* clip, not hidden: hidden still lets focus changes scroll the overlay */
+  overflow: clip;
+  animation: welcomeIn 0.6s var(--tour-ease);
+  transition: opacity 0.45s var(--tour-ease), transform 0.45s var(--tour-ease), padding-bottom 0.45s var(--tour-ease);
 }
 
 .welcome-overlay--closing {
   opacity: 0;
+  transform: scale(1.015);
   pointer-events: none;
 }
 
-@keyframes welcomeFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes welcomeIn {
+  from { opacity: 0; transform: scale(1.015); }
+  to { opacity: 1; transform: none; }
 }
 
+/* Backgrounds crossfade slowly while the visible one drifts in (Ken Burns) */
 .welcome-overlay__bg {
   position: absolute;
   inset: 0;
   z-index: -2;
   background-size: cover;
   background-position: center right;
-  transition: opacity 0.5s ease;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 1.2s var(--tour-ease), transform 9s linear;
+  /* The photos are blue; shift them to the site's teal */
+  filter: hue-rotate(-38deg) saturate(0.75);
+}
+
+.welcome-overlay__bg--active {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .welcome-overlay__scrim {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(100deg, var(--bg) 0%, var(--bg) 38%, transparent 68%);
+  /* Long, eased fade so there's no visible seam where the photo begins */
+  background: linear-gradient(100deg, var(--bg) 0%, var(--bg) 28%, color-mix(in srgb, var(--bg) 70%, transparent) 48%, color-mix(in srgb, var(--bg) 25%, transparent) 66%, transparent 85%);
 }
 
 .welcome-overlay__top {
@@ -44,7 +66,7 @@
 }
 
 .welcome-overlay__skip {
-  background: var(--bg-card);
+  background: color-mix(in srgb, var(--bg-card) 80%, transparent);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -52,111 +74,166 @@
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .welcome-overlay__skip:hover {
   background: var(--bg-subtle);
+  border-color: var(--border-strong);
 }
 
-.welcome-overlay__stage {
+/* ── Track ────────────────────────────────────────────────────────────────── */
+.welcome-overlay__viewport {
   position: relative;
   flex: 1;
   min-height: 0;
+  overflow: clip;
+  touch-action: pan-y;
 }
 
-.welcome-overlay__pane {
-  position: absolute;
-  inset: 0;
+.welcome-overlay__track {
+  display: flex;
+  height: 100%;
+  transition: transform var(--tour-slide-ms) var(--tour-ease);
+  will-change: transform;
+}
+
+.welcome-slide {
+  flex: 0 0 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 620px;
   gap: 18px;
+  max-width: 100%;
+  padding-right: 8%;
   overflow-y: auto;
+}
+
+.welcome-slide > * {
+  max-width: 620px;
+}
+
+/* Text on the incoming slide rises in one line at a time, after the slide
+   has mostly arrived; the outgoing slide's text dims as it leaves. */
+.welcome-slide > * {
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
+  transform: translateY(14px);
+  transition: opacity 0.5s var(--tour-ease), transform 0.6s var(--tour-ease);
 }
 
-.welcome-overlay__pane--active {
-  opacity: 1;
-  pointer-events: auto;
-}
+.welcome-slide--active > * { opacity: 1; transform: none; }
+.welcome-slide--active > *:nth-child(1) { transition-delay: 0.25s; }
+.welcome-slide--active > *:nth-child(2) { transition-delay: 0.33s; }
+.welcome-slide--active > *:nth-child(3) { transition-delay: 0.41s; }
+.welcome-slide--active > *:nth-child(4) { transition-delay: 0.49s; }
+.welcome-slide--active > *:nth-child(5) { transition-delay: 0.57s; }
 
-.welcome-overlay__tag {
+.welcome-slide__tag {
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.8rem;
-  font-weight: 700;
+  letter-spacing: 0.28em;
+  font-size: 0.74rem;
+  font-weight: 600;
   color: var(--accent);
 }
 
-.welcome-overlay__heading {
-  font-size: 2.7rem;
-  line-height: 1.18;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.welcome-slide > .welcome-slide__heading {
+  /* Narrow measure keeps the headline over the darker side of the photo */
+  max-width: 13em;
+}
+
+.welcome-slide__heading {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.08;
+  font-weight: 700;
   color: var(--text);
   margin: 0;
 }
 
-.welcome-overlay__heading span {
+.welcome-slide__heading span {
   color: var(--accent);
+  text-shadow: 0 0 32px rgba(var(--accent-rgb), 0.45);
 }
 
-.welcome-overlay__body {
-  font-size: 1.05rem;
-  line-height: 1.6;
+.welcome-slide__body {
+  font-size: 1.08rem;
+  line-height: 1.65;
   color: var(--text-sub);
-  max-width: 480px;
+  max-width: 500px;
   margin: 0;
 }
 
-.welcome-overlay__features {
+.welcome-slide__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
-  margin: 6px 0;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
 }
 
-.welcome-overlay__feature {
+.welcome-slide__chips li {
+  padding: 6px 12px;
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--bg-card) 70%, transparent);
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.welcome-slide__chips .welcome-slide__chips-more {
+  border-style: dashed;
+  color: var(--text-muted);
+}
+
+.welcome-slide__steps {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 170px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 4px 0 0;
+  list-style: none;
+  counter-reset: step;
 }
 
-.welcome-overlay__feature-icon {
+.welcome-slide__steps li {
+  counter-increment: step;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
-  font-size: 1.05rem;
-}
-
-.welcome-overlay__feature-label {
-  font-size: 0.85rem;
-  font-weight: 600;
+  gap: 14px;
+  align-items: baseline;
+  font-size: 0.98rem;
+  line-height: 1.5;
   color: var(--text-sub);
-  line-height: 1.3;
 }
 
-.welcome-overlay__cta {
+.welcome-slide__steps li::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent);
+  min-width: 26px;
+}
+
+.welcome-slide__steps strong { color: var(--text); }
+
+.welcome-slide__cta {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-top: 6px;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 8px;
 }
 
-.welcome-overlay__btn {
-  font-size: 0.95rem;
+.welcome-slide__cta .btn-primary {
+  font-size: 0.86rem;
   padding: 13px 26px;
+}
+
+/* ── Sign-up slide ────────────────────────────────────────────────────────── */
+.welcome-slide--auth {
+  padding-right: 0;
 }
 
 .welcome-overlay__auth-card {
@@ -170,117 +247,115 @@
 
 /* Tighter spacing than the standalone login page — this version has to fit
    inside a shorter overlay alongside the top bar and nav controls. */
-.welcome-overlay__auth-card .login-card__logo {
-  margin-bottom: 14px;
-}
+.welcome-overlay__auth-card .login-card__logo { margin-bottom: 14px; }
+.welcome-overlay__auth-card .login-tabs { margin-bottom: 16px; }
+.welcome-overlay__auth-card .login-form { gap: 12px; }
+.welcome-overlay__auth-card .login-footer-note { margin-top: 10px; }
+.welcome-overlay__auth-card .login-divider { margin: 12px 0; }
 
-.welcome-overlay__auth-card .login-tabs {
-  margin-bottom: 16px;
-}
-
-.welcome-overlay__auth-card .login-form {
-  gap: 12px;
-}
-
-.welcome-overlay__auth-card .login-footer-note {
-  margin-top: 10px;
-}
-
-.welcome-overlay__auth-card .login-divider {
-  margin: 12px 0;
-}
-
+/* ── Controls ─────────────────────────────────────────────────────────────── */
 .welcome-overlay__nav {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 14px;
   flex-shrink: 0;
   padding-top: 16px;
+}
+
+.welcome-overlay__counter {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.welcome-overlay__counter span {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.welcome-overlay__controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .welcome-overlay__arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border);
-  background: var(--bg-card);
+  background: color-mix(in srgb, var(--bg-card) 80%, transparent);
   color: var(--text);
   font-size: 1.3rem;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.15s, transform 0.15s;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
 }
 
 .welcome-overlay__arrow:hover:not(:disabled) {
-  background: var(--bg-subtle);
-  transform: scale(1.06);
+  border-color: var(--accent);
+  box-shadow: var(--glow-accent);
 }
 
 .welcome-overlay__arrow:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
+  opacity: 0.3;
+  cursor: default;
 }
 
 .welcome-overlay__dots {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .welcome-overlay__dot {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  width: 26px;
+  height: 24px;
   border: none;
   background: transparent;
   cursor: pointer;
   padding: 0;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Dots are short bars; the active one stretches out and glows */
 .welcome-overlay__dot::before {
   content: '';
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
   background: var(--border-strong);
-  transition: background 0.15s, transform 0.15s, width 0.15s;
+  transition: width 0.45s var(--tour-ease), background 0.3s, box-shadow 0.3s;
 }
 
-.welcome-overlay__dot:hover::before {
-  transform: scale(1.2);
-}
+.welcome-overlay__dot:hover::before { background: var(--text-muted); }
 
 .welcome-overlay__dot--active::before {
+  width: 24px;
   background: var(--accent);
-  width: 22px;
-  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.7);
 }
 
 @media (max-width: 760px) {
-  .welcome-overlay {
-    padding: 20px 24px;
-  }
-
-  .welcome-overlay__bg {
-    background-position: center bottom;
-  }
-
+  .welcome-overlay { padding: 20px 24px calc(20px + var(--cookie-banner-h, 0px)); }
+  .welcome-overlay__bg { background-position: center bottom; }
   .welcome-overlay__scrim {
     background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 55%, transparent 85%);
   }
+  .welcome-slide { padding-right: 0; }
+}
 
-  .welcome-overlay__heading {
-    font-size: 2rem;
-  }
-
-  .welcome-overlay__cta {
-    flex-wrap: wrap;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .welcome-overlay { --tour-slide-ms: 1ms; animation: none; }
+  .welcome-overlay__bg { transition: opacity 0.3s; transform: none; }
+  .welcome-slide > * { transition: opacity 0.2s; transform: none; }
+  .welcome-slide--active > * { transition-delay: 0s; }
 }

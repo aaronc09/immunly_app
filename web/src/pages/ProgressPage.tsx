@@ -25,12 +25,12 @@ export default function ProgressPage() {
   const weakModules = quizModules.filter(m => (progress.quizScores[m.id] ?? 0) < 75);
 
   const ACHIEVEMENTS = [
-    { icon: '🔬', title: 'First Steps', desc: 'Complete your first lesson', done: completedCount >= 1 },
-    { icon: '🔥', title: 'On a Roll', desc: 'Reach a 3-day streak', done: progress.streak >= 3 },
-    { icon: '🏆', title: 'Scholar', desc: 'Complete 10 lessons', done: completedCount >= 10 },
-    { icon: '⚗️', title: 'Researcher', desc: 'Earn 500 XP', done: progress.xp >= 500 },
-    { icon: '🎯', title: 'Perfect Score', desc: 'Score 100% on any quiz', done: Object.values(progress.quizScores).some(s => s === 100) },
-    { icon: '🌟', title: 'Completionist', desc: 'Finish all lessons', done: completedCount >= totalLessons },
+    { title: 'First Steps', desc: 'Complete your first lesson', done: completedCount >= 1 },
+    { title: 'On a Roll', desc: 'Reach a 3-day streak', done: progress.streak >= 3 },
+    { title: 'Scholar', desc: 'Complete 10 lessons', done: completedCount >= 10 },
+    { title: 'Researcher', desc: 'Earn 500 XP', done: progress.xp >= 500 },
+    { title: 'Perfect Score', desc: 'Score 100% on any quiz', done: Object.values(progress.quizScores).some(s => s === 100) },
+    { title: 'Completionist', desc: 'Finish all lessons', done: completedCount >= totalLessons },
   ];
 
   return (
@@ -60,7 +60,7 @@ export default function ProgressPage() {
               <div className="stat-row progress-hero__stats">
                 <div className="stat-item">
                   <span className="stat-label">Streak</span>
-                  <span className="stat-value">🔥 {progress.streak}</span>
+                  <span className="stat-value">{progress.streak} {progress.streak === 1 ? 'day' : 'days'}</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-label">Total XP</span>
@@ -129,7 +129,6 @@ export default function ProgressPage() {
                 <div className="weak-list">
                   {weakModules.map(mod => (
                     <Link key={mod.id} to={`/module/${mod.id}`} className="weak-item card">
-                      <span style={{ color: MODULE_COLORS[mod.id] }}>⚠️</span>
                       <div>
                         <strong>{mod.title}</strong>
                         <span>Quiz score: {progress.quizScores[mod.id]}%</span>
@@ -148,7 +147,6 @@ export default function ProgressPage() {
             <div className="achievements-grid">
               {ACHIEVEMENTS.map(a => (
                 <div key={a.title} className={`achievement-card card ${a.done ? 'achievement-card--done' : 'achievement-card--locked'}`}>
-                  <span className="achievement-card__icon">{a.icon}</span>
                   <strong>{a.title}</strong>
                   <span>{a.desc}</span>
                   {a.done && <span className="achievement-card__check">✓</span>}

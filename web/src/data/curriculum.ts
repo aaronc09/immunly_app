@@ -1,5 +1,14 @@
 // Web curriculum — adapted from RN modules with web-friendly section types
 
+// Every module shares the brand accent. It's a CSS variable so it follows the
+// light/dark theme; build tints with tint() rather than appending hex alpha.
+export const BRAND_COLOR = 'var(--accent)';
+
+/** A see-through version of a colour, e.g. tint(color, 10) for a 10% wash. */
+export function tint(color: string, percent: number) {
+  return `color-mix(in srgb, ${color} ${percent}%, transparent)`;
+}
+
 export interface TextSection    { type: 'text';    heading?: string; body: string }
 export interface CalloutSection { type: 'callout'; label: string; text: string; color?: string }
 export interface TableSection   { type: 'table';   heading: string; leftHeader: string; rightHeader: string; rows: { left: string; right: string }[] }
@@ -11,7 +20,6 @@ export type Section = TextSection | CalloutSection | TableSection | StepsSection
 export interface Lesson {
   id: string;
   title: string;
-  emoji: string;
   duration: string;
   sections: Section[];
   takeaways: string[];
@@ -31,7 +39,6 @@ export interface Module {
   number: number;
   title: string;
   subtitle: string;
-  emoji: string;
   color: string;
   lessons: Lesson[];
 }
@@ -41,10 +48,10 @@ const mod1: Module = {
   id: 'mod1', number: 1,
   title: 'Foundations',
   subtitle: 'Genetics, cell biology & the origin of immune cells',
-  emoji: '🧬', color: '#3B82F6',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod1-l1', title: 'DNA, Genes & Proteins', emoji: '🔬', duration: '7 min',
+      id: 'mod1-l1', title: 'DNA, Genes & Proteins', duration: '7 min',
       sections: [
         { type: 'text', heading: 'The Blueprint of Life',
           body: 'Every one of your ~37 trillion cells contains the same DNA — roughly 3 billion base pairs coiled into 23 pairs of chromosomes. DNA is written in a 4-letter alphabet (A, T, G, C), and specific stretches called genes encode the instructions to build proteins — the molecular machines that do almost everything in biology, including running your immune system.' },
@@ -80,7 +87,7 @@ const mod1: Module = {
       ],
     },
     {
-      id: 'mod1-l2', title: 'Cell Biology for Immunologists', emoji: '🦠', duration: '6 min',
+      id: 'mod1-l2', title: 'Cell Biology for Immunologists', duration: '6 min',
       sections: [
         { type: 'text', heading: 'Why Cell Biology Matters',
           body: 'Immune cells are just cells — which means they obey the same rules as all eukaryotic cells. Understanding their organelles helps you understand how they work: how they make proteins to fight infection, how they communicate, and how they respond to signals.' },
@@ -118,7 +125,7 @@ const mod1: Module = {
       ],
     },
     {
-      id: 'mod1-l3', title: 'Hematopoiesis: The Origin of Immune Cells', emoji: '🌳', duration: '8 min',
+      id: 'mod1-l3', title: 'Hematopoiesis: The Origin of Immune Cells', duration: '8 min',
       sections: [
         { type: 'text', heading: 'All Blood Cells Come From One Ancestor',
           body: 'Every immune cell in your body — from neutrophils to T cells — originates from a single cell type: the hematopoietic stem cell (HSC), found in bone marrow. This process of generating all blood cells is called hematopoiesis, and it produces billions of new cells every day.' },
@@ -163,7 +170,7 @@ const mod1: Module = {
       ],
     },
     {
-      id: 'mod1-l4', title: 'The Lymphatic System', emoji: '🗺️', duration: '6 min',
+      id: 'mod1-l4', title: 'The Lymphatic System', duration: '6 min',
       sections: [
         { type: 'text', heading: 'More Than Just Drainage Pipes',
           body: 'The lymphatic system is a network of vessels, nodes, and organs that drains interstitial fluid from tissues and returns it to the bloodstream as lymph. But crucially for immunology, it is also the superhighway that brings antigens and immune cells together — making it the site where most adaptive immune responses are initiated.' },
@@ -208,10 +215,10 @@ const mod2: Module = {
   id: 'mod2', number: 2,
   title: 'The Immune System',
   subtitle: 'Innate defences, adaptive responses & immune memory',
-  emoji: '🛡️', color: '#10B981',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod2-l1', title: 'Innate vs Adaptive Immunity', emoji: '⚔️', duration: '7 min',
+      id: 'mod2-l1', title: 'Innate vs Adaptive Immunity', duration: '7 min',
       sections: [
         { type: 'text', heading: 'Two Arms of Defense',
           body: 'Your immune system has two distinct but interconnected arms. The innate immune system is fast (minutes to hours), non-specific, and uses pre-built pattern recognition to detect common microbial features. The adaptive immune system is slow (days to weeks for a first response), highly specific, and generates immunological memory for faster future responses.' },
@@ -249,7 +256,7 @@ const mod2: Module = {
       ],
     },
     {
-      id: 'mod2-l2', title: 'The Innate Immune Cells', emoji: '🦠', duration: '8 min',
+      id: 'mod2-l2', title: 'The Innate Immune Cells', duration: '8 min',
       sections: [
         { type: 'text', heading: 'The First Responders',
           body: 'When a pathogen breaches the body\'s barriers, innate immune cells are the first to act. They don\'t need prior exposure — they are pre-programmed to recognise and destroy common threats using pattern recognition, phagocytosis, and chemical weapons.' },
@@ -278,7 +285,7 @@ const mod2: Module = {
       ],
     },
     {
-      id: 'mod2-l3', title: 'Cytokines, MHC & Antigen Presentation', emoji: '📡', duration: '9 min',
+      id: 'mod2-l3', title: 'Cytokines, MHC & Antigen Presentation', duration: '9 min',
       sections: [
         { type: 'text', heading: 'The Immune System\'s Communication Network',
           body: 'Cytokines are small secreted proteins that allow immune cells to "talk" to each other. They can activate, inhibit, recruit, or direct the differentiation of target cells. Meanwhile, MHC molecules are the display system that lets T cells inspect what\'s happening inside cells.' },
@@ -314,7 +321,7 @@ const mod2: Module = {
       ],
     },
     {
-      id: 'mod2-l4', title: 'T & B Cell Activation & Memory', emoji: '🎯', duration: '10 min',
+      id: 'mod2-l4', title: 'T & B Cell Activation & Memory', duration: '10 min',
       sections: [
         { type: 'text', heading: 'The Adaptive Response',
           body: 'The adaptive immune system can produce an almost unlimited variety of specific receptors — T cell receptors (TCR) and B cell receptors (BCR) — through a process called VDJ recombination. When a cell with the right receptor encounters its antigen, it is selected to proliferate (clonal selection) and differentiate into effector cells.' },
@@ -362,10 +369,10 @@ const mod3: Module = {
   id: 'mod3', number: 3,
   title: 'When It Goes Wrong',
   subtitle: 'Autoimmunity, allergies, HIV & cancer immune evasion',
-  emoji: '⚠️', color: '#EF4444',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod3-l1', title: 'Autoimmunity & Self-Tolerance', emoji: '🔄', duration: '8 min',
+      id: 'mod3-l1', title: 'Autoimmunity & Self-Tolerance', duration: '8 min',
       sections: [
         { type: 'text', heading: 'When the Immune System Turns on Itself',
           body: 'Self-tolerance is the immune system\'s ability to distinguish "self" from "non-self" and not attack the body\'s own healthy cells. When tolerance breaks down, the immune system mounts a destructive attack against self-antigens — this is autoimmunity. It affects ~5% of the population.' },
@@ -397,7 +404,7 @@ const mod3: Module = {
       ],
     },
     {
-      id: 'mod3-l2', title: 'Allergies & Hypersensitivity', emoji: '🌸', duration: '7 min',
+      id: 'mod3-l2', title: 'Allergies & Hypersensitivity', duration: '7 min',
       sections: [
         { type: 'text', heading: 'When the Immune System Overreacts',
           body: 'Allergies are immune responses to harmless substances (allergens) that are inappropriate and damaging. They are classified into four hypersensitivity types (Coombs & Gell); the most common is Type I — IgE-mediated, which includes hay fever, food allergies, and anaphylaxis.' },
@@ -433,7 +440,7 @@ const mod3: Module = {
       ],
     },
     {
-      id: 'mod3-l3', title: 'HIV & AIDS', emoji: '🔴', duration: '9 min',
+      id: 'mod3-l3', title: 'HIV & AIDS', duration: '9 min',
       sections: [
         { type: 'text', heading: 'A Virus That Targets the Immune System\'s Hub',
           body: 'Human Immunodeficiency Virus (HIV) is a retrovirus that specifically targets CD4⁺ T cells — the very cells that coordinate the entire adaptive immune response. Over years, HIV gradually depletes CD4⁺ T cells until the immune system can no longer defend against opportunistic infections, defining AIDS.' },
@@ -470,7 +477,7 @@ const mod3: Module = {
       ],
     },
     {
-      id: 'mod3-l4', title: 'Cancer & Immune Evasion', emoji: '🦀', duration: '8 min',
+      id: 'mod3-l4', title: 'Cancer & Immune Evasion', duration: '8 min',
       sections: [
         { type: 'text', heading: 'The Immune System Can — and Should — Fight Cancer',
           body: 'Your immune system constantly surveys for abnormal cells and destroys them — a process called immunosurveillance. But cancers that successfully grow have evolved strategies to escape this surveillance. Understanding these escape mechanisms is the foundation for modern immunotherapy.' },
@@ -509,10 +516,10 @@ const mod4: Module = {
   id: 'mod4', number: 4,
   title: 'Treatments',
   subtitle: 'mRNA vaccines, CAR-T therapy & checkpoint inhibitors',
-  emoji: '💉', color: '#8B5CF6',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod4-l1', title: 'mRNA Vaccines', emoji: '💊', duration: '8 min',
+      id: 'mod4-l1', title: 'mRNA Vaccines', duration: '8 min',
       sections: [
         { type: 'text', heading: 'A New Vaccine Technology',
           body: 'Traditional vaccines use weakened or killed pathogens, or pathogen proteins, to stimulate immunity. mRNA vaccines deliver instructions — a piece of mRNA encoding a pathogen antigen — that your own cells read and use to make the antigen temporarily. This triggers immunity without any live virus and without touching your DNA.' },
@@ -547,7 +554,7 @@ const mod4: Module = {
       ],
     },
     {
-      id: 'mod4-l2', title: 'CAR-T Cell Therapy', emoji: '⚗️', duration: '9 min',
+      id: 'mod4-l2', title: 'CAR-T Cell Therapy', duration: '9 min',
       sections: [
         { type: 'text', heading: 'Engineering T Cells to Kill Cancer',
           body: 'CAR-T cell therapy is a form of adoptive cell therapy where a patient\'s own T cells are genetically engineered to express a Chimeric Antigen Receptor (CAR) — an artificial receptor that targets a cancer cell antigen. Once infused back, CAR-T cells can seek and destroy cancer cells with extraordinary precision.' },
@@ -583,7 +590,7 @@ const mod4: Module = {
       ],
     },
     {
-      id: 'mod4-l3', title: 'Checkpoint Inhibitors', emoji: '🔓', duration: '7 min',
+      id: 'mod4-l3', title: 'Checkpoint Inhibitors', duration: '7 min',
       sections: [
         { type: 'text', heading: 'Releasing the Brakes on Anti-Tumour Immunity',
           body: 'Immune checkpoints are natural "off switches" on T cells that prevent excessive immune activity and autoimmunity. Tumours exploit these checkpoints to silence anti-tumour T cells. Checkpoint inhibitors are monoclonal antibodies that block these off-switches — releasing the brakes and allowing T cells to attack cancer.' },
@@ -626,10 +633,10 @@ const mod5: Module = {
   id: 'mod5', number: 5,
   title: 'Research Skills',
   subtitle: 'Reading papers, lab techniques & bioinformatics',
-  emoji: '🔬', color: '#F59E0B',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod5-l1', title: 'How to Read a Scientific Paper', emoji: '📄', duration: '7 min',
+      id: 'mod5-l1', title: 'How to Read a Scientific Paper', duration: '7 min',
       sections: [
         { type: 'text', heading: 'Don\'t Read Papers Like a Textbook',
           body: 'Scientific papers are not written to be read front-to-back on a first pass. They are written for experts. As a student, you need a strategic approach: extract the key claims, assess the evidence, and judge the conclusions — without getting lost in unfamiliar jargon.' },
@@ -675,7 +682,7 @@ const mod5: Module = {
       ],
     },
     {
-      id: 'mod5-l2', title: 'Lab Techniques in Immunology', emoji: '🧪', duration: '9 min',
+      id: 'mod5-l2', title: 'Lab Techniques in Immunology', duration: '9 min',
       sections: [
         { type: 'text', heading: 'How Immunologists Measure the Immune System',
           body: 'Immunology research relies on a toolkit of laboratory techniques for measuring cells, proteins, and gene expression. Understanding these techniques helps you read papers critically — you need to know what each assay can and cannot tell you.' },
@@ -705,7 +712,7 @@ const mod5: Module = {
       ],
     },
     {
-      id: 'mod5-l3', title: 'Computational Biology & RNA-seq', emoji: '💻', duration: '9 min',
+      id: 'mod5-l3', title: 'Computational Biology & RNA-seq', duration: '9 min',
       sections: [
         { type: 'text', heading: 'Big Data in Immunology',
           body: 'Modern immunology generates enormous datasets — RNA sequencing can measure the expression of all ~20,000 human genes simultaneously across thousands of samples or millions of individual cells. Making sense of this data requires bioinformatics: the application of computational methods to biological questions.' },
@@ -758,10 +765,10 @@ const mod6: Module = {
   id: 'mod6', number: 6,
   title: 'Biomedical Research',
   subtitle: 'Turning immunology into discovery — methods and how students get started',
-  emoji: '🔬', color: '#14B8A6',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod6-l1', title: 'From Lessons to the Lab', emoji: '🧪', duration: '8 min',
+      id: 'mod6-l1', title: 'From Lessons to the Lab', duration: '8 min',
       sections: [
         { type: 'text', heading: 'Why translational science exists',
           body: 'Everything you have learned so far — T cells, antibodies, checkpoints, cytokines — started as a discovery in someone\'s lab. Translational research is the work of moving a finding from a test tube ("the bench") to a treatment that helps a patient ("the bedside"). It is slow, collaborative, and where immunology becomes medicine: checkpoint inhibitors, mRNA vaccines, and CAR-T all walked this path.' },
@@ -799,7 +806,7 @@ const mod6: Module = {
       ],
     },
     {
-      id: 'mod6-l2', title: 'Core Lab Methods', emoji: '⚗️', duration: '9 min',
+      id: 'mod6-l2', title: 'Core Lab Methods', duration: '9 min',
       sections: [
         { type: 'text', heading: 'The immunologist\'s toolkit',
           body: 'Research questions are answered with techniques. You do not need to master these before joining a lab — you will learn them hands-on — but recognizing what each one measures makes papers far easier to read and helps you understand what a lab actually does day to day.' },
@@ -830,7 +837,7 @@ const mod6: Module = {
       ],
     },
     {
-      id: 'mod6-l3', title: 'Getting Into Research as a Student', emoji: '🚀', duration: '9 min',
+      id: 'mod6-l3', title: 'Getting Into Research as a Student', duration: '9 min',
       sections: [
         { type: 'text', heading: 'You can start earlier than you think',
           body: 'You do not need a degree to contribute to research. High-school and undergraduate students join labs every year — usually by being curious, reliable, and willing to learn unglamorous tasks. The hardest part is simply getting your foot in the door, and that is a process you can actually plan for.' },
@@ -876,7 +883,7 @@ const mod6: Module = {
       ],
     },
     {
-      id: 'mod6-l4', title: 'Designing a Sound Study', emoji: '📐', duration: '8 min',
+      id: 'mod6-l4', title: 'Designing a Sound Study', duration: '8 min',
       sections: [
         { type: 'text', heading: 'A good question, tested fairly',
           body: 'Whether you are running a pipette or a Python script, the logic of a sound experiment is the same: a clear hypothesis, the right comparisons, and controls that rule out alternative explanations. Understanding this lets you spot strong vs. weak studies — and design your own.' },
@@ -916,10 +923,10 @@ const mod7: Module = {
   id: 'mod7', number: 7,
   title: 'Machine Learning',
   subtitle: 'How computers learn patterns from data — and how to do it without fooling yourself',
-  emoji: '🤖', color: '#6366F1',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod7-l1', title: 'What Is Machine Learning?', emoji: '🧠', duration: '8 min',
+      id: 'mod7-l1', title: 'What Is Machine Learning?', duration: '8 min',
       sections: [
         { type: 'text', heading: 'Learning from examples, not rules',
           body: 'Machine learning (ML) is a branch of artificial intelligence focused on systems that learn patterns from data and use them to make predictions or decisions. Instead of a human writing every rule by hand, the model learns from examples. In biomedicine this powers tools that flag tumors on scans, predict disease flares, and find structure in single-cell data.' },
@@ -949,7 +956,7 @@ const mod7: Module = {
       ],
     },
     {
-      id: 'mod7-l2', title: 'Tasks & Models', emoji: '📈', duration: '10 min',
+      id: 'mod7-l2', title: 'Tasks & Models', duration: '10 min',
       sections: [
         { type: 'text', heading: 'Match the task to the model',
           body: 'The job determines the tool. Classification predicts a category (spam vs. not spam, benign vs. malignant). Regression predicts a continuous number (price, risk score, time to failure). Clustering groups similar points; anomaly detection flags rare patterns. Once you know your task, you can pick a model — and it is almost always best to start simple.' },
@@ -982,7 +989,7 @@ const mod7: Module = {
       ],
     },
     {
-      id: 'mod7-l3', title: 'The ML Workflow & Data Prep', emoji: '🛠️', duration: '10 min',
+      id: 'mod7-l3', title: 'The ML Workflow & Data Prep', duration: '10 min',
       sections: [
         { type: 'text', heading: 'Most of the work is the data',
           body: 'Newcomers think ML is about choosing a fancy model. In practice, the quality of the data and the care of the workflow matter far more. Poor data leads to poor models, even with advanced algorithms — "garbage in, garbage out."' },
@@ -1021,7 +1028,7 @@ const mod7: Module = {
       ],
     },
     {
-      id: 'mod7-l4', title: 'Evaluation, Validation & Trust', emoji: '✅', duration: '11 min',
+      id: 'mod7-l4', title: 'Evaluation, Validation & Trust', duration: '11 min',
       sections: [
         { type: 'text', heading: 'Did it really work?',
           body: 'A model that scores well on paper can still be useless — or dangerous — in the real world. Trustworthy ML depends on choosing the right metric, validating without leakage, and sanity-checking that the model found real signal rather than noise. This is especially true in medicine, where errors have real costs.' },
@@ -1073,10 +1080,10 @@ const mod8: Module = {
   id: 'mod8', number: 8,
   title: 'Clinical Immunology',
   subtitle: 'Transplants, immunodeficiencies & living with a broken immune system',
-  emoji: '🏥', color: '#EC4899',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod8-l1', title: 'Transplant Rejection & Tolerance', emoji: '🫀', duration: '8 min',
+      id: 'mod8-l1', title: 'Transplant Rejection & Tolerance', duration: '8 min',
       sections: [
         { type: 'text', heading: 'Why the Body Attacks New Organs',
           body: 'HLA genes — the human version of MHC — are the most polymorphic genes in the genome, meaning almost no two unrelated people have an identical set. A transplanted organ carries donor HLA molecules that the recipient\'s T cells can recognise as foreign, either directly (donor antigen-presenting cells in the graft activate recipient T cells) or indirectly (recipient antigen-presenting cells process and present donor HLA peptides). Either route can trigger a full adaptive attack on the new organ.' },
@@ -1119,7 +1126,7 @@ const mod8: Module = {
       ],
     },
     {
-      id: 'mod8-l2', title: 'Primary Immunodeficiencies: SCID & DiGeorge', emoji: '🧬', duration: '8 min',
+      id: 'mod8-l2', title: 'Primary Immunodeficiencies: SCID & DiGeorge', duration: '8 min',
       sections: [
         { type: 'text', heading: 'When the Immune System Fails to Develop',
           body: 'Primary immunodeficiencies (PIDs) are genetic — present from birth, even if symptoms appear later — as opposed to secondary immunodeficiencies, which are acquired (such as from HIV infection, chemotherapy, or malnutrition). Over 450 genes are now known to cause primary immunodeficiencies, each disrupting a different piece of immune development or function.' },
@@ -1155,7 +1162,7 @@ const mod8: Module = {
       ],
     },
     {
-      id: 'mod8-l3', title: 'Antibody Deficiencies & Other PIDs', emoji: '🧪', duration: '7 min',
+      id: 'mod8-l3', title: 'Antibody Deficiencies & Other PIDs', duration: '7 min',
       sections: [
         { type: 'text', heading: 'When B Cells Can\'t Make Antibodies',
           body: 'Humoral immunodeficiencies affect the body\'s ability to produce functional antibodies. They span a wide spectrum — from selective IgA deficiency, the most common primary immunodeficiency overall (roughly 1 in 500 people), which is often entirely asymptomatic, to X-linked agammaglobulinemia, which leaves patients with essentially no circulating antibodies at all.' },
@@ -1183,7 +1190,7 @@ const mod8: Module = {
       ],
     },
     {
-      id: 'mod8-l4', title: 'Diagnosing & Living with Immune Disorders', emoji: '🩺', duration: '8 min',
+      id: 'mod8-l4', title: 'Diagnosing & Living with Immune Disorders', duration: '8 min',
       sections: [
         { type: 'text', heading: 'Red Flags for Immunodeficiency',
           body: 'Recurrent, unusually severe, or hard-to-treat infections are the main clue that prompts immunodeficiency testing — for example, four or more ear infections in a year, two or more pneumonias, infections that need IV antibiotics to clear, or failure to gain weight and grow normally in infancy.' },
@@ -1224,10 +1231,10 @@ const mod9: Module = {
   id: 'mod9', number: 9,
   title: 'Microbiome & Immunity',
   subtitle: 'The trillions of microbes shaping your immune system',
-  emoji: '🧫', color: '#06B6D4',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod9-l1', title: 'Meet Your Microbiome', emoji: '🔬', duration: '6 min',
+      id: 'mod9-l1', title: 'Meet Your Microbiome', duration: '6 min',
       sections: [
         { type: 'text', heading: 'You Are Not Just Human Cells',
           body: 'Roughly 38 trillion bacterial cells live in and on the human body — in the same order of magnitude as the number of human cells. Collectively, this community of bacteria, archaea, fungi, and viruses is called the microbiome. The gut, especially the colon, hosts by far the largest and most studied community, but the skin, mouth, and respiratory and urogenital tracts each have their own distinct microbial neighbourhoods.' },
@@ -1271,7 +1278,7 @@ const mod9: Module = {
       ],
     },
     {
-      id: 'mod9-l2', title: 'The Gut-Immune Axis', emoji: '🔗', duration: '8 min',
+      id: 'mod9-l2', title: 'The Gut-Immune Axis', duration: '8 min',
       sections: [
         { type: 'text', heading: 'Your Gut Is an Immune Organ',
           body: 'Roughly 70-80% of the body\'s immune cells reside in gut-associated lymphoid tissue (GALT). This makes sense given the challenge involved: a single layer of epithelial cells separates trillions of microbes from the bloodstream, so the immune system must constantly distinguish harmless commensals from genuine threats — without overreacting to the former or underreacting to the latter.' },
@@ -1306,7 +1313,7 @@ const mod9: Module = {
       ],
     },
     {
-      id: 'mod9-l3', title: 'Dysbiosis & Disease', emoji: '⚖️', duration: '7 min',
+      id: 'mod9-l3', title: 'Dysbiosis & Disease', duration: '7 min',
       sections: [
         { type: 'text', heading: 'When the Balance Breaks',
           body: 'Dysbiosis describes an imbalance in the composition or function of the microbial community — not simply "bad bacteria taking over," but often a loss of overall diversity and depletion of beneficial species. Antibiotics, diet, infection, and stress can all trigger it.' },
@@ -1341,7 +1348,7 @@ const mod9: Module = {
       ],
     },
     {
-      id: 'mod9-l4', title: 'Probiotics, Prebiotics & Fecal Transplants', emoji: '💊', duration: '7 min',
+      id: 'mod9-l4', title: 'Probiotics, Prebiotics & Fecal Transplants', duration: '7 min',
       sections: [
         { type: 'text', heading: 'Can You Fix Your Microbiome?',
           body: 'A large industry has grown around manipulating the microbiome for health. Probiotics are live beneficial microorganisms (such as specific Lactobacillus or Bifidobacterium strains); prebiotics are non-digestible fibres, like inulin, that feed beneficial bacteria already present; synbiotics combine both approaches.' },
@@ -1381,10 +1388,10 @@ const mod10: Module = {
   id: 'mod10', number: 10,
   title: 'Emerging Therapies',
   subtitle: 'Gene editing, engineered antibodies & the next generation of medicine',
-  emoji: '✂️', color: '#F97316',
+  color: BRAND_COLOR,
   lessons: [
     {
-      id: 'mod10-l1', title: 'Gene Therapy Basics', emoji: '🧬', duration: '8 min',
+      id: 'mod10-l1', title: 'Gene Therapy Basics', duration: '8 min',
       sections: [
         { type: 'text', heading: 'Treating Disease by Editing the Source Code',
           body: 'Gene therapy introduces, corrects, or silences genetic material to treat disease, rather than just managing symptoms with drugs. It is especially powerful for diseases caused by a single faulty gene — including many of the primary immunodeficiencies covered in the Clinical Immunology module, like SCID.' },
@@ -1424,7 +1431,7 @@ const mod10: Module = {
       ],
     },
     {
-      id: 'mod10-l2', title: 'CRISPR-Cas9 & Genome Editing', emoji: '✂️', duration: '9 min',
+      id: 'mod10-l2', title: 'CRISPR-Cas9 & Genome Editing', duration: '9 min',
       sections: [
         { type: 'text', heading: 'Programmable Molecular Scissors',
           body: 'CRISPR-Cas9 originated as a bacterial immune system that destroys invading viral DNA. Scientists repurposed it as a precise gene-editing tool: a guide RNA (gRNA) directs the Cas9 enzyme to a specific DNA sequence — next to a short marker called a PAM sequence — where Cas9 cuts both strands of the DNA double helix.' },
@@ -1459,7 +1466,7 @@ const mod10: Module = {
       ],
     },
     {
-      id: 'mod10-l3', title: 'Bispecific Antibodies', emoji: '🔗', duration: '7 min',
+      id: 'mod10-l3', title: 'Bispecific Antibodies', duration: '7 min',
       sections: [
         { type: 'text', heading: 'Antibodies With Two Jobs',
           body: 'A normal antibody binds one specific target with both of its arms. A bispecific antibody is engineered so each arm recognises a different target — most commonly, one arm grabs a tumour antigen while the other grabs CD3 on a T cell, physically bridging the two and forcing that T cell to attack the tumour cell, regardless of whether it would have recognised the tumour on its own.' },
@@ -1493,7 +1500,7 @@ const mod10: Module = {
       ],
     },
     {
-      id: 'mod10-l4', title: 'The Future of Immune Engineering', emoji: '🚀', duration: '7 min',
+      id: 'mod10-l4', title: 'The Future of Immune Engineering', duration: '7 min',
       sections: [
         { type: 'text', heading: 'Where the Field Is Headed',
           body: 'Researchers across gene therapy, cell engineering, and antibody design are converging on the same goal: making powerful immune therapies faster to manufacture, cheaper to access, and safer to use.' },
@@ -1538,8 +1545,6 @@ export function getLesson(moduleId: string, lessonId: string) {
 }
 
 // Keyed by string module id (e.g. 'mod1'), matching how components consume it.
-export const MODULE_COLORS: Record<string, string> = {
-  mod1: '#3B82F6', mod2: '#10B981', mod3: '#EF4444', mod4: '#8B5CF6',
-  mod5: '#F59E0B', mod6: '#14B8A6', mod7: '#6366F1',
-  mod8: '#EC4899', mod9: '#06B6D4', mod10: '#F97316',
-};
+export const MODULE_COLORS: Record<string, string> = Object.fromEntries(
+  ['mod1', 'mod2', 'mod3', 'mod4', 'mod5', 'mod6', 'mod7', 'mod8', 'mod9', 'mod10'].map(id => [id, BRAND_COLOR]),
+);

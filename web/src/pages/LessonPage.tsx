@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { getLesson, getModule, MODULES, MODULE_COLORS } from '../data/curriculum';
+import { getLesson, getModule, MODULES, MODULE_COLORS, tint } from '../data/curriculum';
 import { LESSON_PHOTOS } from '../data/lessonPhotos';
 import { LESSON_PAPERS } from '../data/researchPapers';
 import { useProgress } from '../context/ProgressContext';
 import LessonContent from '../components/LessonContent';
+import { ImageWithSkeleton } from '../components/Skeleton';
 import './LessonPage.css';
 
 export default function LessonPage() {
@@ -118,13 +119,13 @@ export default function LessonPage() {
           ) : (
             <div className="quiz-result card">
               <div className="quiz-result__score" style={{ color }}>
-                {score >= 80 ? '🏆' : score >= 60 ? '🎉' : '💪'} {score}%
+                {score}%
               </div>
               <p>{score >= 80 ? 'Excellent work!' : score >= 60 ? 'Good effort!' : 'Keep practising!'}</p>
               <div className="quiz-result__actions">
                 {nextLesson ? (
                   <Link to={`/module/${mod.id}/lesson/${nextLesson.id}`} className="btn btn-primary" style={{ background: color }}>
-                    Next Lesson → {nextLesson.emoji}
+                    Next Lesson →
                   </Link>
                 ) : nextModule && nextModuleLesson ? (
                   <Link
@@ -136,7 +137,7 @@ export default function LessonPage() {
                   </Link>
                 ) : (
                   <Link to="/courses" className="btn btn-primary" style={{ background: color }}>
-                    🎉 All Modules Complete!
+                    All Modules Complete!
                   </Link>
                 )}
                 <button className="btn btn-outline" onClick={() => { setPhase('lesson'); setSelected([]); setQuizDone(false); }}>
@@ -167,23 +168,23 @@ export default function LessonPage() {
           <main className="lesson-main">
             {/* Hero */}
             <div className="lesson-hero" style={{ borderColor: color }}>
-              <div className="lesson-hero__top" style={{ background: `linear-gradient(135deg, ${color}12, transparent)` }}>
+              <div className="lesson-hero__top" style={{ background: tint(color, 7) }}>
                 <div className="lesson-hero__meta">
-                  <span className="badge" style={{ background: color + '18', color }}>
+                  <span className="badge" style={{ background: tint(color, 12), color }}>
                     {mod.id.replace('mod', 'Module ')}
                   </span>
-                  <span className="lesson-hero__duration">⏱ {lesson.duration}</span>
+                  <span className="lesson-hero__duration">{lesson.duration}</span>
                   {isCompleted && (
                     <span className="badge" style={{ background: 'var(--success-bg)', color: 'var(--success)' }}>✓ Completed</span>
                   )}
                 </div>
-                <h1>{lesson.emoji} {lesson.title}</h1>
+                <h1>{lesson.title}</h1>
               </div>
 
               {/* Photo */}
               {photo && (
                 <div className="lesson-photo">
-                  <img src={photo.url} alt={photo.alt} loading="lazy" />
+                  <ImageWithSkeleton key={photo.url} src={photo.url} alt={photo.alt} loading="lazy" aspectRatio="4 / 3" />
                   <div className="lesson-photo__caption">
                     <em>{photo.caption}</em>
                     <a href={photo.creditUrl} target="_blank" rel="noopener noreferrer" className="photo-credit">
@@ -246,10 +247,10 @@ export default function LessonPage() {
                     key={l.id}
                     to={`/module/${mod.id}/lesson/${l.id}`}
                     className={`sidebar-lesson ${isCurrent ? 'sidebar-lesson--active' : ''} ${done ? 'sidebar-lesson--done' : ''}`}
-                    style={isCurrent ? { borderColor: color, background: color + '10' } : {}}
+                    style={isCurrent ? { borderColor: color, background: tint(color, 8) } : {}}
                   >
                     <span className="sidebar-lesson__icon">{done ? '✓' : i + 1}</span>
-                    <span>{l.emoji} {l.title}</span>
+                    <span>{l.title}</span>
                   </Link>
                 );
               })}
@@ -258,7 +259,7 @@ export default function LessonPage() {
             {/* Research papers */}
             {papers.length > 0 && (
               <div className="sidebar-card card">
-                <h4>📄 Key Papers</h4>
+                <h4>Key Papers</h4>
                 <div className="papers-list">
                   {papers.map((p, i) => (
                     <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" className="paper-item">

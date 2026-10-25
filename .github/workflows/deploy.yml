@@ -36,6 +36,11 @@ jobs:
       - name: Build
         working-directory: web
         run: npm run build
+        env:
+          # Public URL of the ImmunoBot Worker. Set it under Settings → Secrets and
+          # variables → Actions → Variables. Not secret; it ships to browsers.
+          # Leave unset and the ImmunoBot button stays hidden on the live site.
+          VITE_IMMUNOBOT_URL: ${{ vars.IMMUNOBOT_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

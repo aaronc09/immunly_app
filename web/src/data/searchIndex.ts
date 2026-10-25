@@ -3,11 +3,9 @@ import { MODULES, MODULE_COLORS, type Section } from './curriculum';
 export interface SearchResult {
   moduleId: string;
   moduleTitle: string;
-  moduleEmoji: string;
   moduleColor: string;
   lessonId: string;
   lessonTitle: string;
-  lessonEmoji: string;
   snippet: string;
   matchedTitle: boolean;
 }
@@ -15,10 +13,8 @@ export interface SearchResult {
 interface IndexedLesson {
   moduleId: string;
   moduleTitle: string;
-  moduleEmoji: string;
   lessonId: string;
   lessonTitle: string;
-  lessonEmoji: string;
   text: string;
 }
 
@@ -45,10 +41,8 @@ const INDEX: IndexedLesson[] = MODULES.flatMap(mod =>
   mod.lessons.map(lesson => ({
     moduleId: mod.id,
     moduleTitle: mod.title,
-    moduleEmoji: mod.emoji,
     lessonId: lesson.id,
     lessonTitle: lesson.title,
-    lessonEmoji: lesson.emoji,
     text: [lesson.title, ...lesson.sections.map(sectionText), ...lesson.takeaways].join(' · '),
   }))
 );
@@ -81,11 +75,9 @@ export function searchLessons(rawQuery: string, limit = 8): SearchResult[] {
       return {
         moduleId: item.moduleId,
         moduleTitle: item.moduleTitle,
-        moduleEmoji: item.moduleEmoji,
-        moduleColor: MODULE_COLORS[item.moduleId] || '#4F9CF9',
+        moduleColor: MODULE_COLORS[item.moduleId],
         lessonId: item.lessonId,
         lessonTitle: item.lessonTitle,
-        lessonEmoji: item.lessonEmoji,
         snippet,
         matchedTitle: titleMatch,
         rank,

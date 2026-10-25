@@ -1,0 +1,23 @@
+# ImmunoBot proxy (Cloudflare Worker). Setup steps: web/worker/README.md
+name = "immunobot"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+[vars]
+# Sites allowed to call this Worker from a browser. Add your preview URLs here.
+ALLOWED_ORIGINS = "https://immunly.org,https://www.immunly.org,http://localhost:5173"
+GROQ_MODEL = "openai/gpt-oss-20b"
+OPENROUTER_MODEL = "openrouter/free"
+GEMINI_MODEL = "gemini-flash-latest"
+# API keys are NOT set here. Add them as secrets (each one is optional, but
+# at least one is needed; they're tried in this order):
+#   npx wrangler secret put GROQ_API_KEY
+#   npx wrangler secret put OPENROUTER_API_KEY
+#   npx wrangler secret put GEMINI_API_KEY
+
+# Per-visitor limit: 6 questions per 60 seconds per IP address.
+# Cloudflare counts this per data-center location; period must be 10 or 60.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 6, period = 60 }

@@ -48,7 +48,6 @@ export default function StreakSaver() {
     <div className={`streak-overlay ${closing ? 'streak-overlay--closing' : ''}`}>
       <div className="streak-modal">
         <div className="streak-modal__header">
-          <span className="streak-modal__fire">🔥</span>
           <div>
             <h3>Streak Saver</h3>
             <p>Answer today's question to keep your {progress.streak}-day streak alive!</p>
@@ -78,9 +77,8 @@ export default function StreakSaver() {
 
         {isAnswered && (
           <div className={`streak-modal__result ${isCorrect ? 'streak-modal__result--correct' : 'streak-modal__result--wrong'}`}>
-            <div className="streak-modal__result-icon">{isCorrect ? '✅' : '❌'}</div>
             <div>
-              <strong>{isCorrect ? 'Correct! Streak saved! 🎉' : 'Not quite — streak lost.'}</strong>
+              <strong>{isCorrect ? 'Correct! Streak saved!' : 'Not quite — streak lost.'}</strong>
               <p>{question.explanation}</p>
             </div>
           </div>

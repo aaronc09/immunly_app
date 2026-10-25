@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MODULES, MODULE_COLORS } from '../data/curriculum';
+import { MODULES, MODULE_COLORS, tint } from '../data/curriculum';
 import { useProgress } from '../context/ProgressContext';
 import './CoursesPage.css';
 
@@ -56,9 +56,8 @@ export default function CoursesPage() {
                   {/* Left: info */}
                   <div className="course-card__info">
                     <div className="course-card__head">
-                      <span className="course-card__icon">{mod.emoji}</span>
                       <div>
-                        <div className="course-card__tag" style={{ color, background: color + '18' }}>
+                        <div className="course-card__tag" style={{ color, background: tint(color, 12) }}>
                           Module {i + 1}
                         </div>
                         <h2 className="course-card__title">{mod.title}</h2>
@@ -78,7 +77,7 @@ export default function CoursesPage() {
                             style={done ? { borderColor: color, color } : {}}
                           >
                             {done && <span>✓</span>}
-                            {lesson.emoji} {lesson.title}
+                            {lesson.title}
                           </Link>
                         );
                       })}

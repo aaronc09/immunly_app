@@ -109,7 +109,7 @@
 .ref-chip--active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 /* Table blocks */

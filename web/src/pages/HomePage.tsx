@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import { MODULES, MODULE_COLORS } from '../data/curriculum';
+import { MODULES, MODULE_COLORS, tint } from '../data/curriculum';
 import { useProgress } from '../context/ProgressContext';
 import { useAuth } from '../context/AuthContext';
 import Avatar from '../components/Avatar';
+import { PLAY_INTRO_EVENT } from '../components/WelcomeIntro';
 import './HomePage.css';
 
 export default function HomePage() {
@@ -47,9 +48,9 @@ export default function HomePage() {
                 <Link to="/courses" className="btn btn-outline hero__btn">Browse Courses</Link>
                 <button
                   className="btn btn-ghost hero__btn"
-                  onClick={() => window.dispatchEvent(new Event('immunly:play-intro'))}
+                  onClick={() => window.dispatchEvent(new Event(PLAY_INTRO_EVENT))}
                 >
-                  ▶ Watch intro
+                  Watch intro
                 </button>
               </div>
             </div>
@@ -61,7 +62,7 @@ export default function HomePage() {
                   <div className="stat-row">
                     <div className="stat-item">
                       <span className="stat-label">Streak</span>
-                      <span className="stat-value">🔥 {progress.streak}</span>
+                      <span className="stat-value">{progress.streak} {progress.streak === 1 ? 'day' : 'days'}</span>
                     </div>
                     <div className="stat-item">
                       <span className="stat-label">XP</span>
@@ -113,15 +114,14 @@ export default function HomePage() {
 
           <div className="home-modules__grid">
             {MODULES.map((mod, i) => {
-              const color = MODULE_COLORS[mod.id] || '#4F9CF9';
+              const color = MODULE_COLORS[mod.id];
               const completedInMod = mod.lessons.filter(l => progress.completedLessons.includes(l.id)).length;
               const pct = Math.round((completedInMod / mod.lessons.length) * 100);
               return (
                 <Link key={mod.id} to={`/module/${mod.id}`} className="hm-card card">
                   <div className="hm-card__accent" style={{ background: color }} />
                   <div className="hm-card__body">
-                    <div className="hm-card__icon" style={{ color }}>{mod.emoji}</div>
-                    <div className="hm-card__num" style={{ color: color + '18' }}>0{i + 1}</div>
+                    <div className="hm-card__num" style={{ color: tint(color, 12) }}>0{i + 1}</div>
                     <h3 style={{ color: 'var(--text)' }}>{mod.title}</h3>
                     <p>{mod.subtitle}</p>
                     <div className="hm-card__meta">
@@ -148,13 +148,12 @@ export default function HomePage() {
           <div className="section-sub">Not just another textbook online.</div>
           <div className="why-grid">
             {[
-              { icon: '📖', title: 'Landmark papers', desc: 'Every lesson links to real published research — Watson & Crick, Karikó, Allison, and more.' },
-              { icon: '🔥', title: 'Daily streaks', desc: 'A new question every day from a rotating bank keeps your streak alive and knowledge fresh.' },
-              { icon: '🏆', title: 'XP & levels', desc: 'Earn XP as you learn. Rise from Novice to Immunologist as your knowledge deepens.' },
-              { icon: '📷', title: 'Real imagery', desc: 'Verified Wikimedia Commons photos — actual microscopy, diagrams, and scientific imagery.' },
+              { title: 'Landmark papers', desc: 'Every lesson links to real published research — Watson & Crick, Karikó, Allison, and more.' },
+              { title: 'Daily streaks', desc: 'A new question every day from a rotating bank keeps your streak alive and knowledge fresh.' },
+              { title: 'XP & levels', desc: 'Earn XP as you learn. Rise from Novice to Immunologist as your knowledge deepens.' },
+              { title: 'Real imagery', desc: 'Verified Wikimedia Commons photos — actual microscopy, diagrams, and scientific imagery.' },
             ].map((item) => (
               <div key={item.title} className="why-card card">
-                <span className="why-card__icon">{item.icon}</span>
                 <h4>{item.title}</h4>
                 <p>{item.desc}</p>
               </div>

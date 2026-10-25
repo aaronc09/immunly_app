@@ -366,8 +366,8 @@
   flex-shrink: 0;
 }
 
-.quiz-opt--correct .quiz-opt__letter { background: var(--success); color: white; }
-.quiz-opt--wrong .quiz-opt__letter { background: var(--error); color: white; }
+.quiz-opt--correct .quiz-opt__letter { background: var(--success); color: var(--bg-card); }
+.quiz-opt--wrong .quiz-opt__letter { background: var(--error); color: var(--bg-card); }
 
 .quiz-q__explanation {
   margin-top: 14px;
