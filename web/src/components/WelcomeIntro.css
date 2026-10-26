@@ -41,8 +41,8 @@
   opacity: 0;
   transform: scale(1.08);
   transition: opacity 1.2s var(--tour-ease), transform 9s linear;
-  /* The photos are blue; shift them to the site's teal */
-  filter: hue-rotate(-38deg) saturate(0.75);
+  /* The photos are periwinkle; nudge them toward the site's teal blue */
+  filter: hue-rotate(-22deg) saturate(0.85);
 }
 
 .welcome-overlay__bg--active {

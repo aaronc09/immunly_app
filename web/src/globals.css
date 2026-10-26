@@ -1,28 +1,29 @@
 /* ── Immunly Design System ─────────────────────────────────────────────────── */
-/* Palette: charcoal-green #2C3531, deep teal #116466, tan #D9B08C,
-   peach #FFCB9A, pale mint #D1E8E2. Teal is the ONE accent (buttons, links,
-   active states). Tan/peach only appear as warm glow and as the "needs
-   attention" colour. Greys are all cool, tinted green. No pure white/black. */
+/* Palette: slate ink, teal blue, misty blue-green paper; peach only as a warm glow.
+   Teal blue is the ONE accent (buttons, links, active states). Peach/tan only
+   appear as warm glow and as the "needs attention" colour. Greys are all
+   cool, tinted blue. No pure white/black. */
 :root {
   --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-body:    'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Light mode: mint paper */
-  --bg:         #E3EFEB;
-  --bg-card:    #F2F8F5;
-  --bg-subtle:  #D1E8E2;   /* pale mint */
-  --bg-nav:     #F2F8F5;
+  /* Light mode: misty paper */
+  --bg:         #E5EEF0;
+  --bg-rgb:     229, 238, 240;
+  --bg-card:    #F3F8F9;
+  --bg-subtle:  #D3E4E8;
+  --bg-nav:     #F3F8F9;
 
-  --text:       #2C3531;   /* charcoal-green */
-  --text-sub:   #46534E;
-  --text-muted: #5E6E68;
+  --text:       #1E2C31;   /* slate ink */
+  --text-sub:   #3A4C52;
+  --text-muted: #4E6168;
 
-  --primary:    #2C3531;
-  --accent:     #116466;   /* deep teal: the one accent */
-  --accent-rgb: 17, 100, 102;
-  --accent-strong: #0B4C4E;
-  --accent-dim: #C6E2DA;
-  --on-accent:  #F2F8F5;
+  --primary:    #1E2C31;
+  --accent:     #18697F;   /* teal blue: the one accent */
+  --accent-rgb: 24, 105, 127;
+  --accent-strong: #11546A;
+  --accent-dim: #CCE4EA;
+  --on-accent:  #F3F8F9;
   --glow:       217, 176, 140;   /* tan, for warm glows only */
 
   --success:    #2E6B4F;
@@ -32,12 +33,16 @@
   --error:      #A13D2D;
   --error-bg:   #F3DAD3;
 
-  --border:     #C3D9D2;
-  --border-strong: #9DBDB3;
+  --border:     #C2D6DB;
+  --border-strong: #98B5BD;
 
-  --shadow-sm:  0 1px 2px rgba(44, 53, 49, 0.08);
-  --shadow:     0 8px 22px -10px rgba(44, 53, 49, 0.25), 0 1px 2px rgba(44, 53, 49, 0.06);
-  --shadow-lg:  0 22px 48px -16px rgba(44, 53, 49, 0.35), 0 2px 6px rgba(44, 53, 49, 0.08);
+  /* Translucent artwork behind every page (see BackgroundArt) */
+  --art-opacity: 0.32;
+  --art-blend:   multiply;
+
+  --shadow-sm:  0 1px 2px rgba(30, 44, 49, 0.08);
+  --shadow:     0 8px 22px -10px rgba(30, 44, 49, 0.25), 0 1px 2px rgba(30, 44, 49, 0.06);
+  --shadow-lg:  0 22px 48px -16px rgba(30, 44, 49, 0.35), 0 2px 6px rgba(30, 44, 49, 0.08);
   --glow-accent: 0 0 0 1px rgba(var(--accent-rgb), 0.25), 0 8px 24px -8px rgba(var(--accent-rgb), 0.45);
 
   --radius-sm:  4px;
@@ -46,23 +51,24 @@
   --radius-xl:  20px;
 }
 
-/* Dark mode (the default): the deep charcoal-green of the reference */
+/* Dark mode (the default): deep blue-green night */
 [data-theme="dark"] {
-  --bg:         #1B2220;
-  --bg-card:    #232C29;
-  --bg-subtle:  #2C3531;   /* charcoal-green */
-  --bg-nav:     rgba(27, 34, 32, 0.82);
+  --bg:         #101C20;
+  --bg-rgb:     16, 28, 32;
+  --bg-card:    #162428;
+  --bg-subtle:  #1E2F35;
+  --bg-nav:     rgba(16, 28, 32, 0.82);
 
-  --text:       #E6F2EE;   /* mint-tinted ink */
-  --text-sub:   #A8C1B9;
-  --text-muted: #8AA39A;
+  --text:       #E4EEF0;   /* blue-tinted ink */
+  --text-sub:   #A4BAC0;
+  --text-muted: #879DA4;
 
-  --primary:    #E6F2EE;
-  --accent:     #3DB5AD;   /* the same teal, lit up so it glows on dark */
-  --accent-rgb: 61, 181, 173;
-  --accent-strong: #5CCBC3;
-  --accent-dim: #123C3B;
-  --on-accent:  #0E1513;
+  --primary:    #E4EEF0;
+  --accent:     #4DB2C9;   /* the same teal blue, lit up so it glows on dark */
+  --accent-rgb: 77, 178, 201;
+  --accent-strong: #74C6DA;
+  --accent-dim: #12363F;
+  --on-accent:  #0A1417;
   --glow:       255, 203, 154;   /* peach */
 
   --success:    #7FD1B0;
@@ -72,8 +78,11 @@
   --error:      #F08C7A;
   --error-bg:   #3B211C;
 
-  --border:     #33403B;
-  --border-strong: #46564F;
+  --border:     #283A40;
+  --border-strong: #3A5058;
+
+  --art-opacity: 0.24;
+  --art-blend:   screen;
 
   --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow:     0 10px 28px -12px rgba(0, 0, 0, 0.6);
@@ -101,7 +110,7 @@ body {
   transition: background 0.2s, color 0.2s;
 }
 
-/* Two soft light sources pinned to the top of every page — a teal one and a
+/* Two soft light sources pinned to the top of every page — a blue one and a
    warm one — so the dark background has depth instead of being a flat fill. */
 body {
   background-image:
@@ -164,7 +173,7 @@ p  { color: var(--text-sub); line-height: 1.75; }
 
 /* ── Card ───────────────────────────────────────────────────────────────────── */
 /* Glass panels: translucent surface with a hairline edge. Hovering a linked
-   card lights its edge in teal rather than lifting it. */
+   card lights its edge in blue rather than lifting it. */
 .card {
   background: color-mix(in srgb, var(--bg-card) 88%, transparent);
   border-radius: var(--radius-lg);
@@ -267,7 +276,7 @@ a.card:hover, .card:has(> a):hover {
   line-height: 1.15;
   margin-bottom: 6px;
 }
-/* A short glowing teal rule under section titles: one consistent signature */
+/* A short glowing blue rule under section titles: one consistent signature */
 .section-title::after {
   content: '';
   display: block;

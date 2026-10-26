@@ -10,6 +10,7 @@ import StreakSaver from './components/StreakSaver';
 import WelcomeIntro from './components/WelcomeIntro';
 import PageTransition from './components/PageTransition';
 import ScrollEffects from './components/ScrollEffects';
+import BackgroundArt from './components/BackgroundArt';
 import ImmunoBot from './components/ImmunoBot';
 import CookieConsent from './components/CookieConsent';
 import { PageSkeleton } from './components/Skeleton';
@@ -35,6 +36,7 @@ export default function App() {
       <ThemeProvider>
         <AuthProvider>
           <ProgressProvider>
+            <BackgroundArt />
             <WelcomeIntro />
             {/* <IntroVideo /> */}
             <Navbar />

@@ -89,16 +89,26 @@ function FormattedReply({ text }: { text: string }) {
   );
 }
 
-/** The ImmunoBot mark: a small round bot with an antenna. */
-function BotMark({ size = 26 }: { size?: number }) {
+/** The ImmunoBot mascot: a round little immune cell with an antibody antenna.
+ *  It blinks and its antenna wobbles (see ImmunoBot.css). */
+function BotMark({ size = 30 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <line x1="16" y1="4.5" x2="16" y2="9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="16" cy="4" r="2" fill="currentColor" />
-      <rect x="5" y="9" width="22" height="17" rx="8.5" stroke="currentColor" strokeWidth="2" />
-      <circle cx="12" cy="17.5" r="2.2" fill="currentColor" />
-      <circle cx="20" cy="17.5" r="2.2" fill="currentColor" />
-      <path d="M13 22.2c1.8 1.1 4.2 1.1 6 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <svg className="bot-mark" width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <g className="bot-mark__antenna">
+        <path d="M20 10V5.5M20 5.5 16.6 2.4M20 5.5l3.4-3.1" stroke="var(--bot-body)" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="16.2" cy="2.2" r="1.6" fill="var(--bot-cheek)" />
+        <circle cx="23.8" cy="2.2" r="1.6" fill="var(--bot-cheek)" />
+      </g>
+      <rect x="4.5" y="9" width="31" height="28" rx="14" fill="var(--bot-body)" />
+      <g className="bot-mark__eyes">
+        <ellipse cx="14.5" cy="21.5" rx="2.7" ry="3.3" fill="var(--bot-ink)" />
+        <ellipse cx="25.5" cy="21.5" rx="2.7" ry="3.3" fill="var(--bot-ink)" />
+        <circle cx="15.5" cy="20.1" r="1" fill="var(--bot-body)" />
+        <circle cx="26.5" cy="20.1" r="1" fill="var(--bot-body)" />
+      </g>
+      <ellipse cx="9.8" cy="27" rx="2.5" ry="1.5" fill="var(--bot-cheek)" opacity="0.85" />
+      <ellipse cx="30.2" cy="27" rx="2.5" ry="1.5" fill="var(--bot-cheek)" opacity="0.85" />
+      <path d="M17.6 27.2c1.4 1.5 3.4 1.5 4.8 0" stroke="var(--bot-ink)" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
   );
 }
@@ -260,14 +270,14 @@ export default function ImmunoBot() {
           onMouseDown={e => e.preventDefault()}
           onClick={askAboutSelection}
         >
-          <BotMark size={16} /> Ask ImmunoBot
+          <BotMark size={18} /> Ask ImmunoBot
         </button>
       )}
 
       {open && (
         <div ref={panelRef} className="immunobot-panel" role="dialog" aria-label="ImmunoBot chat">
           <header className="immunobot-panel__head">
-            <span className="immunobot-panel__mark"><BotMark size={22} /></span>
+            <span className="immunobot-panel__mark"><BotMark size={26} /></span>
             <div className="immunobot-panel__title">
               <strong>ImmunoBot</strong>
               <span>Your immunology tutor</span>
@@ -350,7 +360,7 @@ export default function ImmunoBot() {
         aria-expanded={open}
         title="Ask ImmunoBot"
       >
-        <BotMark />
+        <BotMark size={40} />
       </button>
     </div>
   );

@@ -1,3 +1,10 @@
+/* ── Mascot colours ───────────────────────────────────────────────────────── */
+.immunobot {
+  --bot-body:  #F3F8F9;
+  --bot-ink:   #1E2C31;
+  --bot-cheek: #F4A9A0;
+}
+
 /* ── Floating launcher (bottom left) ──────────────────────────────────────── */
 /* Sits below the welcome tour (500) and the cookie banner (600), and rises
    above the banner while it's showing via --cookie-banner-h. */
@@ -6,34 +13,56 @@
   left: 20px;
   bottom: calc(20px + var(--cookie-banner-h, 0px));
   z-index: 450;
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent);
-  color: var(--on-accent);
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.4), 0 10px 30px -8px rgba(var(--accent-rgb), 0.7);
+  /* A lit sphere: brighter where the light hits, deeper at the rim */
+  background: radial-gradient(circle at 32% 28%, var(--accent-strong), var(--accent) 55%, color-mix(in srgb, var(--accent) 70%, #0A1417) 100%);
+  box-shadow:
+    0 0 0 1px rgba(var(--accent-rgb), 0.55),
+    0 0 18px 2px rgba(var(--accent-rgb), 0.55),
+    0 0 46px 8px rgba(var(--accent-rgb), 0.35),
+    0 12px 30px -8px rgba(var(--accent-rgb), 0.8);
   transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.25s, bottom 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
-  animation: botArrive 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.4s both;
+  animation:
+    botArrive 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.4s backwards,
+    botBreathe 3.6s ease-in-out 1s infinite;
 }
 
 .immunobot-launcher:hover {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.6), 0 0 36px -2px rgba(var(--accent-rgb), 0.8);
+  transform: translateY(-3px) scale(1.07);
+  box-shadow:
+    0 0 0 1px rgba(var(--accent-rgb), 0.8),
+    0 0 26px 6px rgba(var(--accent-rgb), 0.7),
+    0 0 70px 16px rgba(var(--accent-rgb), 0.45),
+    0 14px 34px -8px rgba(var(--accent-rgb), 0.9);
 }
+.immunobot-launcher:hover .bot-mark { animation: botHop 0.6s cubic-bezier(0.22, 0.61, 0.36, 1); }
 
 .immunobot-launcher:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-.immunobot-launcher--open { transform: scale(0.92); }
+.immunobot-launcher--open { transform: scale(0.92); animation: none; }
 
-/* A slow ring that pulses outward, so the bot reads as "live" */
+/* A soft halo behind the orb, plus a ring that ripples outward */
+.immunobot-launcher::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.45), transparent 68%);
+  filter: blur(6px);
+  z-index: -1;
+  animation: botHalo 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
 .immunobot-launcher::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1.5px solid rgba(var(--accent-rgb), 0.6);
+  border: 2px solid rgba(var(--accent-rgb), 0.7);
   animation: botPulse 3.2s ease-out infinite;
   pointer-events: none;
 }
@@ -45,15 +74,56 @@
 }
 
 @keyframes botPulse {
-  0% { transform: scale(1); opacity: 0.8; }
-  70%, 100% { transform: scale(1.6); opacity: 0; }
+  0% { transform: scale(1); opacity: 0.9; }
+  70%, 100% { transform: scale(1.75); opacity: 0; }
+}
+
+@keyframes botHalo {
+  0%, 100% { opacity: 0.7; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes botBreathe {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -3px; }
+}
+
+@keyframes botHop {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  30% { transform: translateY(-3px) scale(0.94, 1.06); }
+  60% { transform: translateY(0) scale(1.06, 0.94); }
+}
+
+/* ── Mascot ───────────────────────────────────────────────────────────────── */
+.bot-mark { overflow: visible; filter: drop-shadow(0 1px 1.5px rgba(11, 18, 27, 0.25)); }
+
+.bot-mark__eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: botBlink 5s ease-in-out infinite;
+}
+
+.bot-mark__antenna {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: botWobble 2.8s ease-in-out infinite;
+}
+
+@keyframes botBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+@keyframes botWobble {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
 }
 
 /* ── Panel ────────────────────────────────────────────────────────────────── */
 .immunobot-panel {
   position: fixed;
   left: 20px;
-  bottom: calc(88px + var(--cookie-banner-h, 0px));
+  bottom: calc(98px + var(--cookie-banner-h, 0px));
   z-index: 450;
   width: min(390px, calc(100vw - 40px));
   height: min(560px, calc(100vh - 120px - var(--cookie-banner-h, 0px)));
@@ -63,7 +133,7 @@
   backdrop-filter: blur(14px);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(var(--accent-rgb), 0.12);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(var(--accent-rgb), 0.2), 0 0 40px -6px rgba(var(--accent-rgb), 0.35);
   overflow: hidden;
   transform-origin: bottom left;
   animation: panelIn 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -86,11 +156,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--accent-dim);
-  color: var(--accent);
+  background: radial-gradient(circle at 32% 28%, var(--accent-strong), var(--accent) 70%);
+  box-shadow: 0 0 16px -2px rgba(var(--accent-rgb), 0.7);
   flex-shrink: 0;
 }
 
@@ -317,7 +387,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 8px 24px -8px rgba(var(--accent-rgb), 0.8);
+  box-shadow: 0 0 18px -2px rgba(var(--accent-rgb), 0.75), 0 8px 24px -8px rgba(var(--accent-rgb), 0.8);
   animation: askIn 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .immunobot-ask--below { transform: translate(-50%, 0); }
@@ -328,12 +398,12 @@
 }
 
 @media (max-width: 600px) {
-  .immunobot-launcher { left: 14px; bottom: calc(14px + var(--cookie-banner-h, 0px)); width: 52px; height: 52px; }
+  .immunobot-launcher { left: 14px; bottom: calc(14px + var(--cookie-banner-h, 0px)); width: 58px; height: 58px; }
   .immunobot-panel {
     left: 8px;
     right: 8px;
     width: auto;
-    bottom: calc(76px + var(--cookie-banner-h, 0px));
+    bottom: calc(86px + var(--cookie-banner-h, 0px));
     height: min(70vh, calc(100vh - 100px - var(--cookie-banner-h, 0px)));
   }
 }
@@ -341,5 +411,6 @@
 @media (prefers-reduced-motion: reduce) {
   .immunobot-launcher, .immunobot-panel, .immunobot-msg, .immunobot-ask { animation: none; }
   .immunobot-launcher::after { animation: none; opacity: 0; }
+  .immunobot-launcher::before, .bot-mark__eyes, .bot-mark__antenna, .immunobot-launcher:hover .bot-mark { animation: none; }
   .immunobot-msg--typing span { animation: none; opacity: 0.7; }
 }

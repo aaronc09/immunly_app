@@ -1,0 +1,47 @@
+/* Sits behind all page content (z-index -1 in the root stacking context) and
+   above the body's flat fill. Opacity and blend come from globals.css so each
+   theme decides how strongly the artwork shows. */
+.bg-art {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  /* Fade the artwork out on the left, where most headlines and text start */
+  -webkit-mask-image: linear-gradient(100deg, transparent 8%, rgba(0, 0, 0, 0.55) 45%, #000 80%);
+  mask-image: linear-gradient(100deg, transparent 8%, rgba(0, 0, 0, 0.55) 45%, #000 80%);
+}
+
+.bg-art__layer {
+  position: absolute;
+  inset: -6% -4%;
+  background-size: cover;
+  background-position: center right;
+  opacity: 0;
+  mix-blend-mode: var(--art-blend);
+  /* The artwork is periwinkle; nudge it toward the palette's teal blue */
+  filter: hue-rotate(-22deg) saturate(0.85);
+  transform: translate3d(0, var(--art-shift, 0px), 0) scale(1.04);
+  transition: opacity 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation: artDrift 38s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.bg-art__layer--in { opacity: var(--art-opacity); }
+
+/* A very slow sway, so the cells feel suspended rather than printed */
+@keyframes artDrift {
+  from { translate: 0 0; }
+  to   { translate: -1.5% 1%; }
+}
+
+@media (max-width: 768px) {
+  .bg-art {
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 85%);
+    mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 85%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-art__layer { animation: none; transition: none; transform: scale(1.04); }
+}

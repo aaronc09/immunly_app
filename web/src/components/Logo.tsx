@@ -8,12 +8,12 @@ interface LogoProps {
 
 export default function Logo({ size = 32, showWordmark = true, className }: LogoProps) {
   const { theme } = useTheme();
-  // Charcoal/mint + teal, matching --primary and --accent in globals.css
+  // Slate/mist + teal blue, matching --primary and --accent in globals.css
   const isDark = theme === 'dark';
-  const dark  = isDark ? '#E6F2EE' : '#2C3531';
-  const mid   = isDark ? '#A8C1B9' : '#46534E';
-  const light = isDark ? '#3DB5AD' : '#116466';
-  const pale  = isDark ? '#123C3B' : '#D1E8E2';
+  const dark  = isDark ? '#E4EEF0' : '#1E2C31';
+  const mid   = isDark ? '#A4BAC0' : '#3A4C52';
+  const light = isDark ? '#4DB2C9' : '#18697F';
+  const pale  = isDark ? '#12363F' : '#D3E4E8';
   const wordmarkMain = dark;
 
   return (

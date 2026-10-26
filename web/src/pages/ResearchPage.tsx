@@ -39,7 +39,7 @@ export default function ResearchPage() {
             <span className="hero-label">RESEARCH PATH</span>
             <h1 className="hero-headline">
               From Curiosity<br />
-              to <span className="hero-teal">Discovery.</span>
+              to <span className="hero-accent">Discovery.</span>
             </h1>
             <p className="hero-sub">
               Three paths. Countless opportunities.<br />
@@ -531,12 +531,12 @@ function InPersonTab() {
   // SVG attributes can't read CSS variables, so the map mirrors the palette
   // in globals.css by hand.
   const dark      = theme === 'dark';
-  const mapFill   = dark ? '#2C3531' : '#D1E8E2';
-  const mapStroke = dark ? '#46564F' : '#9DBDB3';
-  const mapHover  = dark ? '#33403B' : '#C3D9D2';
-  const pinInk    = dark ? '#0E1513' : '#F2F8F5';
-  const pin       = dark ? '#3DB5AD' : '#116466';
-  const pinStrong = dark ? '#5CCBC3' : '#0B4C4E';
+  const mapFill   = dark ? '#1E2F35' : '#D3E4E8';
+  const mapStroke = dark ? '#3A5058' : '#98B5BD';
+  const mapHover  = dark ? '#283A40' : '#C2D6DB';
+  const pinInk    = dark ? '#0A1417' : '#F3F8F9';
+  const pin       = dark ? '#4DB2C9' : '#18697F';
+  const pinStrong = dark ? '#74C6DA' : '#11546A';
 
   const clusters = buildClusters(INPERSON_PROGRAMS, liveZoom);
 

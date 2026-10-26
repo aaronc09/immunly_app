@@ -48,7 +48,7 @@
   margin: 0;
 }
 
-.hero-teal {
+.hero-accent {
   color: var(--accent);
 }
 
@@ -93,8 +93,8 @@
 }
 
 .hero-image {
-  /* Blue artwork, shifted to the site's teal */
-  filter: hue-rotate(-38deg) saturate(0.8);
+  /* The artwork is periwinkle; nudge it toward the site's teal blue */
+  filter: hue-rotate(-22deg) saturate(0.85);
   display: block;
   height: 100%;
   width: auto;
