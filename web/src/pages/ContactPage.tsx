@@ -4,6 +4,11 @@ import './ContactPage.css';
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvznedqn';
 
+const TEAM = [
+  { role: 'CEO', name: 'Aaron Choi' },
+  { role: 'CTO', name: 'Carter He' },
+];
+
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -97,6 +102,17 @@ export default function ContactPage() {
                 All lesson content is written for learners with a basic biology background.
                 Research paper links point to the original published work — we don't reproduce their content.
               </p>
+            </div>
+            <div className="contact-info-card card">
+              <h3>Team</h3>
+              <dl className="contact-team">
+                {TEAM.map(m => (
+                  <div key={m.role} className="contact-team__member">
+                    <dt>{m.role}</dt>
+                    <dd>{m.name}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
             <div className="contact-info-card card">
               <h3>Found an error?</h3>
