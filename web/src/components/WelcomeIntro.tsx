@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from './Logo';
+import { PLAY_VIDEO_EVENT } from './IntroVideo';
 import { useAuth } from '../context/AuthContext';
 import { MODULES } from '../data/curriculum';
 import '../pages/LoginPage.css';
@@ -247,6 +248,14 @@ export default function WelcomeIntro() {
                 ) : (
                   <button className="btn btn-primary" onClick={() => go(i + 1)}>
                     {i === 0 ? 'Take the tour →' : i === TOUR.length - 1 ? 'Get started →' : 'Next →'}
+                  </button>
+                )}
+                {i === 0 && (
+                  <button
+                    className="btn btn-outline welcome-slide__video-btn"
+                    onClick={() => window.dispatchEvent(new Event(PLAY_VIDEO_EVENT))}
+                  >
+                    ▶ Watch the video
                   </button>
                 )}
                 {i === 0 && !user && (

@@ -6,7 +6,7 @@ import { ProgressProvider } from './context/ProgressContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import StreakSaver from './components/StreakSaver';
-// import IntroVideo from './components/IntroVideo';
+import IntroVideo from './components/IntroVideo';
 import WelcomeIntro from './components/WelcomeIntro';
 import PageTransition from './components/PageTransition';
 import ScrollEffects from './components/ScrollEffects';
@@ -38,7 +38,7 @@ export default function App() {
           <ProgressProvider>
             <BackgroundArt />
             <WelcomeIntro />
-            {/* <IntroVideo /> */}
+            <IntroVideo />
             <Navbar />
             <ScrollEffects />
             <StreakSaver />

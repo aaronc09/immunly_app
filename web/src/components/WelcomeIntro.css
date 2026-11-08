@@ -226,7 +226,8 @@
   margin-top: 8px;
 }
 
-.welcome-slide__cta .btn-primary {
+.welcome-slide__cta .btn-primary,
+.welcome-slide__cta .welcome-slide__video-btn {
   font-size: 0.86rem;
   padding: 13px 26px;
 }
