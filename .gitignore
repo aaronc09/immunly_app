@@ -46,3 +46,7 @@ yarn-error.*
 # Cloudflare Worker local secrets and state
 .dev.vars
 .wrangler/
+
+# Local-only marketing assets
+Social media posts/
+.DS_Store
